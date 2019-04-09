@@ -7,6 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
+  SafeAreaView
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
@@ -19,48 +21,37 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
+      <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
+        <View style={styles.navbar}>
+          <Text style={styles.title}>Location</Text>
+          <Text>C</Text>
+        </View>
+        <ScrollView nestedScrollEnabled={true} style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <View style={styles.recommendPart}>
+            <Text style={styles.label}>Top 10 in sg</Text>
+            <View style={styles.recommendA}>
 
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get 2 started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
             </View>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.recommendScroll}>
+              <View style={styles.rp}>
 
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
+              </View>
+              <View style={styles.rp}>
 
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+            </ScrollView>
           </View>
         </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -98,91 +89,74 @@ export default class HomeScreen extends React.Component {
   };
 }
 
+const BLACK = '#535259'
+const WHITE = '#f5f4f9'
+const MARGIN = 9
+_colorCheck = (label) =>{
+  const hour = new Date().getHours()
+  if (hour >=8 && hour <= 19){
+    if (label == 'text') {
+      return BLACK
+    } else {
+      return WHITE
+    }
+  } else {
+    if (label == 'text') {
+      return WHITE
+    } else {
+      return BLACK
+    }
+  }
+}
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+    backgroundColor: _colorCheck('bg'),
   },
   contentContainer: {
-    paddingTop: 30,
   },
-  welcomeContainer: {
+  navbar: {
+    justifyContent: "space-between",
+    paddingHorizontal: MARGIN,
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    height: 44,
+    flexDirection: 'row'
   },
-  welcomeImage: {
-    width: 100,
+  label: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: _colorCheck('text')
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '600',
+    color: _colorCheck('text')
+  },
+  recommendPart: {
+    alignItems: 'flex-start',
+    flex:1,
+    margin:MARGIN
+  },
+  rp: {
+    backgroundColor: 'blue',
     height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
+    width: 100,
+    alignItems: 'flex-start',
+    borderRadius: 4,
+    marginTop:10,
+    marginRight:10,
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  recommendA: {
+    flex:1,
+    marginTop: 10,
+    width: '100%',
+    height: 120,
+    backgroundColor: 'blue',
+    borderRadius: 4
+  }, 
+  recommendScroll: {
+    width: '100%'
+  }
 });

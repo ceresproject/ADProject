@@ -12,6 +12,7 @@ def post_name(self, instance, filename):
 
 class LocationTag(models.Model):
     tag = models.CharField(max_length=MAX_TITLE_LENGTH, null=False)
+    content = models.CharField(max_length=MAX_BODY_LENGTH, null=False)
 
     def __str__(self):
         return self.tag

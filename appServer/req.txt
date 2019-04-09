@@ -26,7 +26,6 @@ macholib==1.10
 Markdown==2.6.11
 MarkupSafe==1.0
 mccabe==0.6.1
-mysqlclient==1.3.14
 Naked==0.1.31
 pefile==2018.8.8
 Pillow==5.3.0

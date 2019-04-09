@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb147ca6-a04f-4203-9aa9-c5659ae44d4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../appClient/navigation/MainTabNavigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appClient/navigation/MainTabNavigator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../appClient/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appClient/screens/HomeScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travelResources/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/travelResources/models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/travelResources/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="14" column="57" selection-start-line="14" selection-start-column="57" selection-end-line="14" selection-end-column="57" />
+            <state relative-caret-position="267">
+              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -165,15 +163,16 @@
       <workItem from="1554769360732" duration="163000" />
       <workItem from="1554769526457" duration="62000" />
       <workItem from="1554769728074" duration="2335000" />
-      <workItem from="1554778986902" duration="665000" />
+      <workItem from="1554778986902" duration="1550000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3548000" />
+    <option name="totallyTimeSpent" value="4433000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="829" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2639485" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -222,8 +221,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/travelResources/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="14" column="57" selection-start-line="14" selection-start-column="57" selection-end-line="14" selection-end-column="57" />
+        <state relative-caret-position="267">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>

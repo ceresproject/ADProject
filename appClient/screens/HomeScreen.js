@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '400',
     color: _colorCheck('text')
   },
   title: {
     fontSize: 26,
-    fontWeight: '600',
+    fontWeight: '500',
     color: _colorCheck('text')
   },
   recommendPart: {

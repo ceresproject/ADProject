@@ -139,3 +139,4 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ['*', ]
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")

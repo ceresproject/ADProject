@@ -50,6 +50,43 @@ export default class HomeScreen extends React.Component {
               </View>
             </ScrollView>
           </View>
+          <View style={styles.recommendPart}>
+            <Text style={styles.label}>Top 10 in sg</Text>
+            <View style={styles.recommendA}>
+
+            </View>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.recommendScroll}>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+              <View style={styles.rp}>
+
+              </View>
+            </ScrollView>
+          </View>
+          <View style={styles.recommendPart}>
+            <Text style={styles.label}>Top 10 in sg</Text>
+            <ScrollView showsHorizontalScrollIndicator={false} style={styles.recommendScroll}>
+              <View style={styles.recommendA}>
+
+              </View>
+              <View style={styles.recommendA}>
+
+              </View>
+              <View style={styles.recommendA}>
+
+              </View>
+            </ScrollView>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );

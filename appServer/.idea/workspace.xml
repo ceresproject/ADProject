@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb147ca6-a04f-4203-9aa9-c5659ae44d4d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/app.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.ini" beforeDir="false" afterPath="$PROJECT_DIR$/app.ini" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.ini">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+            <state relative-caret-position="135">
+              <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -251,12 +249,12 @@
       <workItem from="1554778986902" duration="1550000" />
       <workItem from="1554810175898" duration="1485000" />
       <workItem from="1554855397914" duration="3415000" />
-      <workItem from="1554875966009" duration="1452000" />
+      <workItem from="1554875966009" duration="1797000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10785000" />
+    <option name="totallyTimeSpent" value="11130000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="829" extended-state="0" />
@@ -397,8 +395,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+        <state relative-caret-position="135">
+          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
         </state>
       </provider>
     </entry>

@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-
+import LocationScreen from '../screens/LocationScreen';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
@@ -23,16 +23,16 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const LocationStack = createStackNavigator({
+  Location: LocationScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Concern',
+LocationStack.navigationOptions = {
+  tabBarLabel: 'Location',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-bookmark' : 'md-bookmark'}
+      name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
     />
   ),
 };
@@ -46,6 +46,20 @@ SearchStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+    />
+  ),
+};
+
+const LinksStack = createStackNavigator({
+  Links: LinksScreen,
+});
+
+LinksStack.navigationOptions = {
+  tabBarLabel: 'Concern',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-bookmark' : 'md-bookmark'}
     />
   ),
 };
@@ -66,7 +80,8 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  LocationStack,
   SearchStack,
+  LinksStack,
   SettingsStack,
 });

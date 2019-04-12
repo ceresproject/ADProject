@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^login/', CustomAuthToken.as_view()),
     path('', include(router.urls)),
+    url(r'^register/', RegisterUserAPIView.as_view()),
 
 ]

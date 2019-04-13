@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from account.views import *
+from travelResources.views import *
 from .routes import *
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +25,6 @@ urlpatterns = [
     url(r'^login/', CustomAuthToken.as_view()),
     path('', include(router.urls)),
     url(r'^register/', RegisterUserAPIView.as_view()),
+    url(r'^api/home/', HomeRecommendView.as_view()),
 
 ]

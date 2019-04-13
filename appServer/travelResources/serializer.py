@@ -1,7 +1,23 @@
 from rest_framework import serializers
 from .models import *
 
+class TypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Type
+        fields = '__all__'
+        read_only_fields = ['id', 'create_date']
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    url = serializers.ImageField(use_url=True, allow_null=True)
+    class Meta:
+        model = Image
+        fields = '__all__'
+        read_only_fields = ['id', 'create_date']
+
 class ArticlePostSerializer(serializers.ModelSerializer):
+    type = TypeSerializer(many=True)
+    images = ImageSerializer(many=True)
     class Meta:
         model = ArticlePost
         fields = '__all__'
@@ -9,6 +25,8 @@ class ArticlePostSerializer(serializers.ModelSerializer):
 
 
 class LocationTagSerializer(serializers.ModelSerializer):
+    type = TypeSerializer(many=True)
+    images = ImageSerializer(many=True)
     class Meta:
         model = LocationTag
         fields = '__all__'

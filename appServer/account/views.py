@@ -24,12 +24,22 @@ class CustomAuthToken(ObtainAuthToken):
         })
 
 
-class RegisterUserAPIView(CreateAPIView):
-    model = get_user_model()
+class RegisterUserAPIView(APIView):
     permission_classes = [
         permissions.AllowAny # Or anon users can't register
     ]
-    serializer_class = UserSerializer
+
+    def post(self, request, *args, **kwargs):
+        try:
+            user = User.objects.create_user(**request.data)
+            user.set_password(request.data['password'])
+            user.save()
+            return Response({'detail': 'Success'})
+        except:
+            return Response({'detail': 'Fail'})
+
+
+
 
 
 class BookMarkViewSet(viewsets.ModelViewSet):

@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+
 from account.views import *
 from travelResources.views import *
 from .routes import *
+from .settings import MEDIA_ROOT
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
@@ -26,5 +30,6 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^register/', RegisterUserAPIView.as_view()),
     url(r'^api/home/', HomeRecommendView.as_view()),
+    url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
 ]

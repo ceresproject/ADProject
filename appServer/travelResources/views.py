@@ -44,3 +44,19 @@ class HomeRecommendView(APIView):
         page_article = page_obj.paginate_queryset(queryset=articles, request=request, view=self)
         data = ArticlePostSerializer(page_article, many=True)
         return page_obj.get_paginated_response(data.data)
+
+
+class BookmarkView(APIView):
+
+    def get(self, request, format=None):
+        # get all tags in types
+
+        # get all posts in a week
+        today_date = datetime.date.today()
+        location = dict(self.request.data).setdefault('location', 'Singapore')
+        articles = ArticlePost.objects.filter(Q(tag__tag__iexact=location) | Q(tag__articlepost__title__iexact=location)).order_by('-read_times')
+        articles = articles.filter(create_date__range=[(today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today_date.strftime("%Y-%m-%d")]).order_by("-read_times")
+        page_obj = MyPageNumber()
+        page_article = page_obj.paginate_queryset(queryset=articles, request=request, view=self)
+        data = ArticlePostSerializer(page_article, many=True)
+        return page_obj.get_paginated_response(data.data)

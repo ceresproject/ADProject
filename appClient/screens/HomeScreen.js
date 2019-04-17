@@ -28,48 +28,29 @@ export default class HomeScreen extends React.Component {
         </View>
         <ScrollView nestedScrollEnabled={true} style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.recommendPart}>
-            <Text style={styles.label}>Top 10 in sg</Text>
+            <Text style={styles.label}>Main Title</Text>
             <View style={styles.recommendA}>
-
+              <Text>Top 1 Title</Text>
+              <Text>Development mode is enabled, your app will be slower but yo</Text>
             </View>
-            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.recommendScroll}>
+            <ScrollView 
+            showsHorizontalScrollIndicator={false} 
+            horizontal={true} 
+            style={styles.recommendScroll}>
               <View style={styles.rp}>
-
+              <Text>Top 2</Text>
               </View>
               <View style={styles.rp}>
-
+              <Text>Top 3</Text>
               </View>
               <View style={styles.rp}>
-
+              <Text>Top 4</Text>
               </View>
               <View style={styles.rp}>
-
+              <Text>Top 5</Text>
               </View>
               <View style={styles.rp}>
-
-              </View>
-            </ScrollView>
-          </View>
-          <View style={styles.recommendPart}>
-            <Text style={styles.label}>Top 10 in sg</Text>
-            <View style={styles.recommendA}>
-
-            </View>
-            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.recommendScroll}>
-              <View style={styles.rp}>
-
-              </View>
-              <View style={styles.rp}>
-
-              </View>
-              <View style={styles.rp}>
-
-              </View>
-              <View style={styles.rp}>
-
-              </View>
-              <View style={styles.rp}>
-
+              <Text>Top 6</Text>
               </View>
             </ScrollView>
           </View>
@@ -77,13 +58,7 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.label}>Top 10 in sg</Text>
             <ScrollView showsHorizontalScrollIndicator={false} style={styles.recommendScroll}>
               <View style={styles.recommendA}>
-
-              </View>
-              <View style={styles.recommendA}>
-
-              </View>
-              <View style={styles.recommendA}>
-
+              <Text>Top 6</Text>
               </View>
             </ScrollView>
           </View>
@@ -126,7 +101,7 @@ export default class HomeScreen extends React.Component {
   };
 }
 
-const BLACK = '#535259'
+const BLACK = '#2a2b2d'
 const WHITE = '#f5f4f9'
 const MARGIN = 9
 _colorCheck = (label) =>{
@@ -168,7 +143,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    fontWeight: '500',
+    fontWeight: '800',
     color: _colorCheck('text')
   },
   recommendPart: {
@@ -189,7 +164,7 @@ const styles = StyleSheet.create({
     flex:1,
     marginTop: 10,
     width: '100%',
-    height: 120,
+    minHeight: 120,
     backgroundColor: 'blue',
     borderRadius: 4
   }, 

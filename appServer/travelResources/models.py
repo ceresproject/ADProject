@@ -63,9 +63,14 @@ class Rank(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
 
 
-
-# Create your models here.
 class UserFollow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
 
+class BookMark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag = models.ForeignKey(LocationTag, on_delete=models.CASCADE)
+    create_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.tag.tag

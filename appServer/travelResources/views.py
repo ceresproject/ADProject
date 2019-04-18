@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render
 import time, datetime
 # Create your views here.
@@ -7,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+import json
 from .serializer import *
 from .models import *
 
@@ -30,7 +31,7 @@ class LocationTagViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
 
-class HomeRecommendView(APIView):
+class HomeRecommendView2(APIView):
 
     def get(self, request, format=None):
         # get all tags in types
@@ -44,6 +45,34 @@ class HomeRecommendView(APIView):
         page_article = page_obj.paginate_queryset(queryset=articles, request=request, view=self)
         data = ArticlePostSerializer(page_article, many=True)
         return page_obj.get_paginated_response(data.data)
+
+class HomeTopRecommendSerializer(serializers.Serializer):
+    id = serializers.IntegerField(min_value=1)
+    tag = LocationTagSerializer()
+    articles = ArticlePostSerializer(many=True)
+
+class HomeRecommendView(APIView):
+
+    def get(self, request, format=None):
+        # get all tags in types
+
+        # get all posts in a week
+        today_date = datetime.date.today()
+        articles = []
+        section = {
+            'tag': None,
+            'results': None
+        }
+        for tag in LocationTag.objects.all():
+            get_articles = ArticlePost.objects.filter(tag=tag).all().order_by('-read_times')[:10]
+            articles_serializers = ArticlePostSerializer(get_articles,many=True)
+            section = HomeTopRecommendSerializer(data={'id':tag.id,'tag': LocationTagSerializer(tag).data, 'articles':articles_serializers.data})
+            section.is_valid()
+            articles.append(section.data)
+
+
+        #articles = articles.filter(create_date__range=[(today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today_date.strftime("%Y-%m-%d")]).order_by("-read_times")
+        return Response({'results':articles})
 
 
 class BookmarkView(APIView):

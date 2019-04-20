@@ -9,8 +9,11 @@ import {
   View,
   StatusBar,
   SafeAreaView,
+  ImageBackground,
   FlatList
 } from 'react-native';
+import { LinearGradient } from 'expo';
+
 import api from '../constants/APIs';
 import { WebBrowser } from 'expo';
 import axios from "axios";
@@ -63,37 +66,41 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.recommendPart} key={item.id}>
       <Text style={styles.label}>Top 10 in {item.tag.tag}</Text>
-      <View style={styles.recommendA}>
-        <Text>{item.articles[0].title}</Text>
-        <Text>{item.articles[0].content}</Text>
-      </View>
-      <ScrollView 
+      <ImageBackground source={{uri:api.apis.MAIN_URL+ item.articles[0].images[0].url}}
+        imageStyle={{ borderRadius: 9 }}
+        style={styles.recommendA}>
+        <LinearGradient 
+        colors={['transparent', 'rgba(0,0,0,0.8)']}
+        style={styles.recommendAB}>
+        <Text style={styles.article_title}>{item.articles[0].title}</Text>
+        </LinearGradient>
+      </ImageBackground>
+
+      <FlatList 
       showsHorizontalScrollIndicator={false} 
       horizontal={true} 
+      keyExtractor={this._keyExtractor}
+      data={item.articles.slice(1,10)}
+      renderItem={({item}) =>
+        <ImageBackground source={{uri: api.apis.MAIN_URL+ item.images[0].url}}
+        imageStyle={{ borderRadius: 9 }}
+        style={styles.rp}>
+        <LinearGradient 
+        colors={['transparent', 'rgba(0,0,0,0.8)']}
+        style={styles.rpb}>
+        <Text style={styles.article_title_sub}>{item.title}</Text>
+        </LinearGradient>
+      </ImageBackground>  
+      }
       style={styles.recommendScroll}>
-        <View style={styles.rp}>
-        <Text>Top 2</Text>
-        </View>
-        <View style={styles.rp}>
-        <Text>Top 3</Text>
-        </View>
-        <View style={styles.rp}>
-        <Text>Top 4</Text>
-        </View>
-        <View style={styles.rp}>
-        <Text>Top 5</Text>
-        </View>
-        <View style={styles.rp}>
-        <Text>Top 6</Text>
-        </View>
-      </ScrollView>
+      </FlatList>
     </View>
     )
   }
 
   _loadHomeResults() {
     const that = this;
-    axios.get(api.apis.HOME_RECOMMEND).then(res=>{
+    axios({url: api.apis.HOME_RECOMMEND, method:'get'}).then(res=>{
       //console.log(res.data)
       that.setState({recommendResults: res.data.results})
     })
@@ -151,23 +158,53 @@ const styles = StyleSheet.create({
     margin:MARGIN
   },
   rp: {
-    backgroundColor: 'blue',
+    flex:1,
+    minWidth: 80,
     height: 80,
-    width: 100,
-    alignItems: 'flex-start',
-    borderRadius: 4,
+    width: 'auto',
+    borderRadius: 9,
     marginTop:10,
     marginRight:10,
+  },
+  rpb: {
+    flex:1,
+    height: 80,
+    width: 'auto',
+    minWidth: 80,
+    padding: 9,
+    borderRadius: 9,
+    justifyContent: 'flex-end',
+    alignItems:'flex-start'
   },
   recommendA: {
     flex:1,
     marginTop: 10,
     width: '100%',
     minHeight: 120,
-    backgroundColor: 'blue',
-    borderRadius: 4
+    maxHeight: 150,
+    borderRadius: 9,
+
+  }, 
+  recommendAB: {
+    flex:1,
+    width: '100%',
+    padding: 9,
+    borderRadius: 9,
+ 
+    justifyContent: 'flex-end',
+    alignItems:'flex-start'
   }, 
   recommendScroll: {
     width: '100%'
+  },
+  article_title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: 'white'
+  },
+  article_title_sub: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: 'white'
   }
 });

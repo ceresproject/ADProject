@@ -15,13 +15,21 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ['url']
 
 
+class BookmarkSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BookMark
+        fields = '__all__'
+        read_only_fields = ['id', 'create_date']
+
+
 class ArticlePostSerializer(serializers.ModelSerializer):
     type = TypeSerializer(many=True)
     images = ImageSerializer(many=True)
     class Meta:
         model = ArticlePost
         fields = '__all__'
-        read_only_fields = ['id', 'create_date']
+        read_only_fields = ['id', 'create_date', 'read_times']
 
 class LocationTagSerializer(serializers.ModelSerializer):
     type = TypeSerializer(many=True)

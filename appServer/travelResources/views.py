@@ -5,9 +5,11 @@ import time, datetime
 # Create your views here.
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.views import *
+from rest_framework.generics import *
 import json
 from .serializer import *
 from .models import *
@@ -19,10 +21,30 @@ class MyPageNumber(PageNumberPagination):
     max_page_size = None
 
 
+class BookmarkViewSet(viewsets.ModelViewSet):
+    queryset = BookMark.objects.all()
+    serializer_class = BookmarkSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def list(self, request):
+        user = self.request.user
+        queryset = BookMark.objects.filter(user=user)
+        bookmarks = self.paginate_queryset(queryset)
+        bookmarks = BookmarkSerializer(bookmarks, many=True)
+        return self.get_paginated_response(bookmarks.data)
+
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = ArticlePost.objects.all()
     serializer_class = ArticlePostSerializer
     permission_classes = (permissions.IsAuthenticated, )
+
+    def retrieve(self, request, pk=None):
+        article = ArticlePost.objects.get(id=pk)
+        ReadRecord.objects.create(article=article, user=self.request.user)
+        serializer = ArticlePostSerializer(article)
+        return Response({'article':serializer.data,'read_times':ReadRecord.objects.filter(article=article).count()})
+
+
 
 
 class LocationTagViewSet(viewsets.ModelViewSet):
@@ -31,27 +53,15 @@ class LocationTagViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
 
-class HomeRecommendView2(APIView):
-
-    def get(self, request, format=None):
-        # get all tags in types
-
-        # get all posts in a week
-        today_date = datetime.date.today()
-        location = dict(self.request.data).setdefault('location', 'Singapore')
-        articles = ArticlePost.objects.filter(Q(tag__tag__iexact=location) | Q(tag__articlepost__title__iexact=location)).order_by('-read_times')
-        articles = articles.filter(create_date__range=[(today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today_date.strftime("%Y-%m-%d")]).order_by("-read_times")
-        page_obj = MyPageNumber()
-        page_article = page_obj.paginate_queryset(queryset=articles, request=request, view=self)
-        data = ArticlePostSerializer(page_article, many=True)
-        return page_obj.get_paginated_response(data.data)
 
 class HomeTopRecommendSerializer(serializers.Serializer):
     id = serializers.IntegerField(min_value=1)
     tag = LocationTagSerializer()
     articles = ArticlePostSerializer(many=True)
 
+
 class HomeRecommendView(APIView):
+    #permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request, format=None):
         # get all tags in types
@@ -63,6 +73,7 @@ class HomeRecommendView(APIView):
             'tag': None,
             'results': None
         }
+
         for tag in LocationTag.objects.all():
             get_articles = ArticlePost.objects.filter(tag=tag).all().order_by('-read_times')[:10]
             articles_serializers = ArticlePostSerializer(get_articles,many=True)
@@ -76,16 +87,46 @@ class HomeRecommendView(APIView):
 
 
 class BookmarkView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
 
-    def get(self, request, format=None):
-        # get all tags in types
+    def post(self, request):
+        params = self.request.data
+        tag_id = params['id']
+        try:
+            location = LocationTag.objects.get(id=tag_id)
+        except:
+            return Response({'status': False,'detail': 'This location does not exist!'})
+        BookMark.objects.get_or_create(user=self.request.user, tag=location)
+        return Response({'status': True,'detail': 'Marked success!'})
 
-        # get all posts in a week
-        today_date = datetime.date.today()
-        location = dict(self.request.data).setdefault('location', 'Singapore')
-        articles = ArticlePost.objects.filter(Q(tag__tag__iexact=location) | Q(tag__articlepost__title__iexact=location)).order_by('-read_times')
-        articles = articles.filter(create_date__range=[(today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today_date.strftime("%Y-%m-%d")]).order_by("-read_times")
-        page_obj = MyPageNumber()
-        page_article = page_obj.paginate_queryset(queryset=articles, request=request, view=self)
-        data = ArticlePostSerializer(page_article, many=True)
-        return page_obj.get_paginated_response(data.data)
+class RankAPIkView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request):
+        params = self.request.data
+        tag_id = params['id']
+        try:
+            article = ArticlePost.objects.get(id=tag_id)
+        except:
+            return Response({'detail': 'This article does not exist!'})
+        Rank.objects.get_or_create(user=self.request.user, post=article, level=params['level'], content=params['content'])
+        return Response({'detail': 'Ranked success!'})
+
+
+class SearchAPIView(ListAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request):
+        params = self.request.data
+        key = params['key']
+        try:
+            queryset = ArticlePost.objects.filter(title__icontains=key).order_by('-create_date')
+            articles = self.paginate_queryset(queryset)
+            articles = ArticlePostSerializer(articles,many=True)
+            print(articles)
+        except:
+            return Response({'detail': 'No results'})
+
+        return self.get_paginated_response(articles.data)
+
+#lass DefaultSearchPageResults(ListAPIView):

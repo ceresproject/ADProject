@@ -6,3 +6,4 @@ from travelResources.views import *
 router = DefaultRouter()
 router.register(r'article', ArticleViewSet)
 router.register(r'locationTag', LocationTagViewSet)
+router.register(r'bookMark', BookmarkViewSet)

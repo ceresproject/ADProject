@@ -50,7 +50,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 class LocationTagViewSet(viewsets.ModelViewSet):
     queryset = LocationTag.objects.all()
     serializer_class = LocationTagSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.AllowAny, )
 
 
 
@@ -60,6 +60,9 @@ class HomeTopRecommendSerializer(serializers.Serializer):
     articles = ArticlePostSerializer(many=True)
 
 
+'''
+Recommend
+'''
 class HomeRecommendView(APIView):
     #permission_classes = (permissions.IsAuthenticated, )
 

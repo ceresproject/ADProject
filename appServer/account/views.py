@@ -39,6 +39,18 @@ class RegisterUserAPIView(APIView):
             return Response({'detail': 'Fail'})
 
 
+class TokenAuthCheckAPIView(APIView):
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            Token.objects.get(key=request.data['token'])
+            return Response({'detail': 'Success'})
+        except:
+            return Response({'detail': 'Fail'})
+
 
 
 

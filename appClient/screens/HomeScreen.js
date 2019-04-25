@@ -36,7 +36,7 @@ export default class HomeScreen extends React.Component {
     return (
       <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
         <View style={styles.navbar}>
-          <Text style={styles.title}>Location</Text>
+          <Text style={styles.title}>Singapore</Text>
           <Text>C</Text>
         </View>
         <ScrollView nestedScrollEnabled={true} style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -50,13 +50,7 @@ export default class HomeScreen extends React.Component {
             </FlatList>
           </View>
           <View style={styles.recommendPart}>
-              <Text style={styles.label}>Top 10 in sg</Text>
-              <ScrollView showsHorizontalScrollIndicator={false} style={styles.recommendScroll} contentContainerStyle={styles.contentContainer}>
-                <View style={styles.recommendA}>
-                <Text>Top 6</Text>
-                </View>
-              </ScrollView>
-            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );
@@ -65,16 +59,18 @@ export default class HomeScreen extends React.Component {
   _ifGetRecommendResults=({item})=> {
     return (
       <View style={styles.recommendPart} key={item.id}>
-      <Text style={styles.label}>Top 10 in {item.tag.tag}</Text>
-      <ImageBackground source={{uri:api.apis.MAIN_URL+ item.articles[0].images[0].url}}
-        imageStyle={{ borderRadius: 9 }}
-        style={styles.recommendA}>
-        <LinearGradient 
-        colors={['transparent', 'rgba(0,0,0,0.8)']}
-        style={styles.recommendAB}>
-        <Text style={styles.article_title}>{item.articles[0].title}</Text>
-        </LinearGradient>
-      </ImageBackground>
+      <Text style={styles.label}>{item.tag.tag}</Text>
+      <TouchableOpacity style={styles.touchA} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
+        <ImageBackground source={{uri:api.apis.MAIN_URL+ item.articles[0].images[0].url}}
+          imageStyle={{ borderRadius: 9 }}
+          style={styles.recommendA}>
+          <LinearGradient 
+          colors={['transparent', 'rgba(0,0,0,0.8)']}
+          style={styles.recommendAB}>
+          <Text style={styles.article_title}>{item.articles[0].title}</Text>
+          </LinearGradient>
+        </ImageBackground>
+      </TouchableOpacity>
 
       <FlatList 
       showsHorizontalScrollIndicator={false} 
@@ -82,20 +78,30 @@ export default class HomeScreen extends React.Component {
       keyExtractor={this._keyExtractor}
       data={item.articles.slice(1,10)}
       renderItem={({item}) =>
+      <TouchableOpacity style={styles.touchrp} onPress={() => this._goToLocationTagDetail(item.id)}>
+
         <ImageBackground source={{uri: api.apis.MAIN_URL+ item.images[0].url}}
-        imageStyle={{ borderRadius: 9 }}
-        style={styles.rp}>
-        <LinearGradient 
-        colors={['transparent', 'rgba(0,0,0,0.8)']}
-        style={styles.rpb}>
-        <Text style={styles.article_title_sub}>{item.title}</Text>
-        </LinearGradient>
-      </ImageBackground>  
+          imageStyle={{ borderRadius: 9 }}
+          style={styles.rp}>
+          <LinearGradient 
+          colors={['transparent', 'rgba(0,0,0,0.8)']}
+          style={styles.rpb}>
+          <Text style={styles.article_title_sub}>{item.title}</Text>
+          </LinearGradient>
+        </ImageBackground>  
+      </TouchableOpacity>
       }
       style={styles.recommendScroll}>
       </FlatList>
     </View>
     )
+  }
+
+  _goToLocationTagDetail(id) {
+    console.log(id)
+    this.props.navigation.push('ArticleDetail', {
+      itemId: id,
+    });
   }
 
   _loadHomeResults() {
@@ -108,7 +114,7 @@ export default class HomeScreen extends React.Component {
 }
 const BLACK = '#2a2b2d'
 const WHITE = '#f5f4f9'
-const MARGIN = 9
+const MARGIN = 13
 _colorCheck = (label) =>{
   const hour = new Date().getHours()
   //hour >=8 && hour <= 19
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontWeight: '400',
+    fontWeight: '600',
     color: _colorCheck('text')
   },
   title: {
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
     flex:1,
     margin:MARGIN
   },
-  rp: {
+  touchrp: {
     flex:1,
     minWidth: 80,
     height: 80,
@@ -165,6 +171,13 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginTop:10,
     marginRight:10,
+  },
+  rp: {
+    flex:1,
+    minWidth: 80,
+    height: 80,
+    width: 'auto',
+    borderRadius: 9,
   },
   rpb: {
     flex:1,
@@ -177,6 +190,14 @@ const styles = StyleSheet.create({
     alignItems:'flex-start'
   },
   recommendA: {
+    flex:1,
+    width: '100%',
+    minHeight: 120,
+    maxHeight: 150,
+    borderRadius: 9,
+
+  }, 
+  touchA: {
     flex:1,
     marginTop: 10,
     width: '100%',

@@ -8,8 +8,10 @@ import LinksScreen from '../screens/LinksScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import LocationScreen from '../screens/LocationScreen';
+import ArticleDetailScreen from "../screens/ArticleDetailScreen";
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  ArticleDetail: ArticleDetailScreen
 });
 
 HomeStack.navigationOptions = {
@@ -21,6 +23,27 @@ HomeStack.navigationOptions = {
 
     />
   ),
+};
+
+HomeStack.navigationOptions = ({ navigation }) => {
+  let tabBarLabel = 'Explore';
+  let tabBarIcon = ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-compass' : 'md-compass'}
+
+    />
+  )
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel,
+    tabBarIcon,
+  };
 };
 
 const LocationStack = createStackNavigator({

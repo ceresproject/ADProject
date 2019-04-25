@@ -2,7 +2,7 @@ const main_url = 'https://api.moyishe.xyz/';
 
 export default {
   apis: {
-    MAIN_URL: 'https://api.moyishe.xyz/',
+    MAIN_URL: 'https://api.moyishe.xyz',
     LOGIN: main_url + 'login/',
     REGISTER: main_url + 'register/',
     ARTICLE: main_url + 'article/',

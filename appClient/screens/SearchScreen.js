@@ -25,10 +25,6 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
-        <View style={styles.navbar}>
-          <Text style={styles.title}>Location</Text>
-          <Text>C</Text>
-        </View>
         <View style={{padding: 9}}>
           <TextInput
             style={styles.searchBar}

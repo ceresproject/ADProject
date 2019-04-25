@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^login/', CustomAuthToken.as_view()),
     path('', include(router.urls)),
     url(r'^register/', RegisterUserAPIView.as_view()),
+    url(r'^logout/', TokenAuthCleanAPIView.as_view()),
     url(r'^auth/', TokenAuthCheckAPIView.as_view()),
     url(r'^api/home/recommend/', HomeRecommendView.as_view()),
     url(r'^api/makeMark/', BookmarkView.as_view()),

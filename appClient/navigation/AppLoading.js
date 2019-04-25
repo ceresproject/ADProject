@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   AsyncStorage,
+  ActivityIndicator,
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
@@ -19,71 +20,39 @@ import api from '../constants/APIs';
 import axios from "axios";
 import { ExpoLinksView } from '@expo/samples';
 
-export class AppLoading extends React.Component {
+export default class AppLoading extends React.Component {
     static navigationOptions = {
     header: null,
     };
     state = {username: '', password: ''};
     componentWillMount () {
-        if (AsyncStorage.getItem('token')!='') {
-            this.props.navigation.navigate('Main');
-        }
+      this._authToken()
     }
-    async _authSignin () {
-      if (this.state.username.trim()=='' || this.state.password.trim()==''){
-      Alert.alert(
-          'Error',
-          'Please fill up the information!',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          {cancelable: false},
-        );
-      return
-    }
+    async _authToken () {
     const that = this;
-    axios({url: api.apis.LOGIN, method:'post' ,data: {
-        username: that.state.username,
-        password: that.state.password
+    const token = await AsyncStorage.getItem('token');
+    console.log(token)
+    axios({url: api.apis.AUTH, method:'post' ,data: {
+        token: token
     }}).then(res=>{
-        AsyncStorage.setItem('token', res.data.token);
+      if (res.data.detail){
         that.props.navigation.navigate('Main');
-        console.log(res.data)
+      } else {
+        that.props.navigation.navigate('Auth');
+      }
     }).catch(error=>{
         console.log(error)
 
-        Alert.alert(
-            'Error',
-            'Login failed! Your username or password incorrect!',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-          );
     })
   }
   render() {    
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <View style={styles.container} behavior="padding" enabled>
         <ImageBackground source={require('../assets/images/login.png')} style={styles.body}>
-            <Text style={[styles.title,{marginBottom:40}]}>Login</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                onChangeText={(text) => this.setState({username: text})}
-            />
-            <TextInput
-                secureTextEntry={true}
-                password={true}
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={(text) => this.setState({password: text})}
-            />
-            <TouchableHighlight style={[styles.button,{backgroundColor: 'orange'}]} onPress={()=>this._authSignin()}>
-                    <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableHighlight>
+            <Image style={{width:120, height:120}} source={require('../assets/images/icon.png')}/>
+            <ActivityIndicator style={{marginTop: 80}} size="large" color="#0000ff" />
         </ImageBackground>
-    </KeyboardAvoidingView>
+    </View>
     );
   }
 }

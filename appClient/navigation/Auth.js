@@ -24,11 +24,6 @@ export class SigninScreen extends React.Component {
     header: null,
     };
     state = {username: '', password: ''};
-    async componentWillMount () {
-        if (await AsyncStorage.getItem('token')) {
-            this.props.navigation.navigate('Main');
-        }
-    }
     async _authSignin () {
     if (this.state.username.trim()=='' || this.state.password.trim()==''){
         Alert.alert(
@@ -68,20 +63,20 @@ export class SigninScreen extends React.Component {
         <ImageBackground source={require('../assets/images/login.png')} style={styles.body}>
             <Text style={[styles.title,{marginBottom:40}]}>Login</Text>
             <TextInput
-                style={styles.input}
+                style={Platform.OS == 'ios'? styles.inputIOS: styles.inputAndroid}
                 placeholder="Username"
                 onChangeText={(text) => this.setState({username: text})}
             />
             <TextInput
                 secureTextEntry={true}
                 password={true}
-                style={styles.input}
+                style={Platform.OS == 'ios'? styles.inputIOS: styles.inputAndroid}
                 placeholder="Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
-            <TouchableHighlight style={[styles.button,{backgroundColor: 'orange'}]} onPress={()=>this._authSignin()}>
-                    <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableHighlight>
+            <TouchableOpacity style={[Platform.OS == 'ios'? styles.buttonIOS: styles.buttonAndroid,{backgroundColor: 'orange'}]} onPress={()=>this._authSignin()}>
+                    <Text style={Platform.OS == 'ios'? styles.buttonTextIOS: styles.buttonTextAndroid}>Sign In</Text>
+            </TouchableOpacity>
         </ImageBackground>
     </KeyboardAvoidingView>
     );
@@ -103,16 +98,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  button:{
+  buttonIOS:{
     width: 230,
-    padding: 13,
-    margin: 9,
+    paddingHorizontal: MARGIN*2,
+    paddingTop: MARGIN+5,
+    paddingBottom: MARGIN+5,
+    margin: MARGIN,
     backgroundColor: '#f9915e',
     borderRadius: 24,
     justifyContent: 'center',
     alignItems:'center'
   },
-  buttonText: {color: 'white', fontWeight: '500'},
+  buttonAndroid:{
+    width: 230,
+    paddingHorizontal: MARGIN*2,
+    paddingTop: MARGIN,
+    paddingBottom: MARGIN,
+    margin: MARGIN,
+    backgroundColor: '#f9915e',
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems:'center'
+  },
+  buttonTextIOS: {color: 'white', fontWeight: '400',    fontSize: 18},
+  buttonTextAndroid: {color: 'white', fontWeight: '400',    fontSize: 14},
   navbar: {
     justifyContent: "space-between",
     paddingHorizontal: MARGIN,
@@ -120,13 +129,31 @@ const styles = StyleSheet.create({
     height: 44,
     flexDirection: 'row'
   },
-  input: {
+  inputIOS: {
     width: 230,
-    margin: 9,
-    padding: 13,
-    borderColor: '#888888',
-    borderWidth: 1,
-    borderRadius: 24
+    fontWeight: '400',
+    fontSize: 18,
+
+    borderRadius: 24,
+    marginBottom: MARGIN,
+    paddingHorizontal: MARGIN*2,
+    paddingTop: MARGIN+5,
+    paddingBottom: MARGIN+5,
+    borderRadius: MARGIN,
+    backgroundColor: WHITE
+  },
+  inputAndroid: {
+    width: 230,
+    fontWeight: '400',
+    fontSize: 14,
+
+    borderRadius: 24,
+    marginBottom: MARGIN,
+    paddingHorizontal: MARGIN*2,
+    paddingTop: MARGIN,
+    paddingBottom: MARGIN,
+    borderRadius: MARGIN,
+    backgroundColor: WHITE
   },
   label: {
     fontSize: 20,

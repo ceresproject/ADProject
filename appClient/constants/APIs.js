@@ -7,6 +7,8 @@ export default {
     REGISTER: main_url + 'register/',
     ARTICLE: main_url + 'article/',
     TAG: main_url + 'locationTag/',
-    HOME_RECOMMEND: main_url + 'api/home/recommend/'
+    HOME_RECOMMEND: main_url + 'api/home/recommend/',
+    LOGOUT: main_url + 'logout/',
+    AUTH: main_url + 'auth/'
   }
 };

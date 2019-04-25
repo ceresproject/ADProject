@@ -49,9 +49,8 @@ export default class ArticleDetailScreen extends React.Component {
     const token = await AsyncStorage.getItem('token')
     let that = this;
     axios({url: api.apis.ARTICLE + JSON.stringify(this.itemId) + '/', method:'get', headers: {'Authorization': 'Token ' + token}}).then(res=>{
-      that.setState({header_images: res.data.article.images})
-      that.setState({article: res.data.article})
-      that.setState({read_times: res.data.read_times})
+      that.setState({header_images: res.data.images})
+      that.setState({article: res.data})
       that.setState({loadding: false})
 
     }).catch(error=>{
@@ -64,7 +63,8 @@ export default class ArticleDetailScreen extends React.Component {
   _header (navigation) {
     return (
       <View
-      style={{flex:1, width: '100%', margin: MARGIN*2}}>
+      style={{width: '100%', padding: MARGIN*2, height: 'auto', position: 'relative', left: 0, right: 0,
+      justifyContent:'flex-start'}}>
       <TouchableOpacity
       onPress={() => navigation.goBack()}>
       <Icon.Ionicons
@@ -80,18 +80,20 @@ export default class ArticleDetailScreen extends React.Component {
     if (!this.state.loadding){
       return (
         <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={'light-content'}/> 
+        {this._header(this.props.navigation)}
+
         <ScrollView >
           <ImageBackground
           source={{uri: api.apis.MAIN_URL + this.state.header_images[0].url}}
           imageStyle={{resizeMode: 'cover', width: '100%', height:380}}
           style={{width: '100%', height:380}}>
           <LinearGradient
-          style={{flex:1, width: '100%', height:380, justifyContent:'space-between'}}
+          style={{width: '100%', height:380, justifyContent:'flex-end'}}
           colors={['transparent', BLACK]}>
-            {this._header(this.props.navigation)}
-            <View style={{flex:1, margin:MARGIN*2, justifyContent:'flex-end'}}>
-            <Text style={[styles.title,{flex:1}]}>{this.state.article.title}</Text>
-            <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start',alignItems:'center'}}>
+            <View style={{margin:MARGIN*2, justifyContent:'flex-end'}}>
+            <Text style={[styles.title,{marginTop:MARGIN*2}]}>{this.state.article.title}</Text>
+            <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center', marginTop: MARGIN*2}}>
               <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center',marginRight:MARGIN}}>
                 <Icon.Ionicons
                   name={Platform.OS === 'ios' ? 'ios-timer' : 'md-timer'}
@@ -106,12 +108,11 @@ export default class ArticleDetailScreen extends React.Component {
                   size={18}
                   color={'white'}
                 />
-                <Text style={[styles.label,{marginLeft:MARGIN}]}>{this.state.read_times}</Text>
+                <Text style={[styles.label,{marginLeft:MARGIN}]}>{this.state.article.read_times}</Text>
               </View>
             </View>
             <FlatList
               horizontal={true} 
-              style={{flex: 1}}
               scrollEnabled={false}
               keyExtractor={this._keyExtractor}
               data={this.state.article.type}
@@ -123,8 +124,8 @@ export default class ArticleDetailScreen extends React.Component {
             </LinearGradient>
           </ImageBackground>
   
-            <View style={{margin:MARGIN}}>
-            <Text style={styles.label}>{this.state.article.content}</Text>
+            <View style={{margin:MARGIN*2}}>
+            <Text style={[styles.label,{color:'rgba(255,255,255,0.8)'}]}>{this.state.article.content}</Text>
             </View>
           
           </ScrollView>
@@ -162,11 +163,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     color: WHITE,
+    lineHeight:30
   },
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: WHITE
+    color: WHITE,
+    
   },
   recommendPart: {
     alignItems: 'flex-start',
@@ -195,16 +198,21 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   tag: {
-    borderRadius: 24,
+    borderRadius: 9,
     backgroundColor: 'red',
-    padding: 9,
     marginTop:9,
     marginRight:9,
-    height: 32
+    justifyContent: 'center',
+    alignItems:'center',
+    height: 28,
+    lineHeight: 28
   },
   tagText: {
     color: 'white',
     fontSize: 14,
+    marginLeft: MARGIN,
+    marginRight: MARGIN,
+    textAlign:'center',
     fontWeight: '600'
   },
 });

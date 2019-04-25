@@ -34,9 +34,9 @@ class RegisterUserAPIView(APIView):
             user = User.objects.create_user(**request.data)
             user.set_password(request.data['password'])
             user.save()
-            return Response({'detail': 'Success'})
+            return Response({'detail': True})
         except:
-            return Response({'detail': 'Fail'})
+            return Response({'detail': False})
 
 
 class TokenAuthCheckAPIView(APIView):
@@ -47,10 +47,22 @@ class TokenAuthCheckAPIView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             Token.objects.get(key=request.data['token'])
-            return Response({'detail': 'Success'})
+            return Response({'detail': True})
         except:
-            return Response({'detail': 'Fail'})
+            return Response({'detail': False})
 
+
+class TokenAuthCleanAPIView(APIView):
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            Token.objects.get(key=request.data['token']).delete()
+            return Response({'detail': True})
+        except:
+            return Response({'detail': False})
 
 
 

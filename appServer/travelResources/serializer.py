@@ -26,6 +26,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 class ArticlePostSerializer(serializers.ModelSerializer):
     type = TypeSerializer(many=True)
     images = ImageSerializer(many=True)
+    read_times = serializers.IntegerField()
     class Meta:
         model = ArticlePost
         fields = '__all__'

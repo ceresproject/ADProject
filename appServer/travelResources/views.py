@@ -41,8 +41,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         article = ArticlePost.objects.get(id=pk)
         ReadRecord.objects.create(article=article, user=self.request.user)
+        read_times = ReadRecord.objects.filter(article=article).count()
+        ArticlePostSerializer(article).update(instance=article, validated_data={'read_times': read_times})
+        article = ArticlePost.objects.get(id=pk)
         serializer = ArticlePostSerializer(article)
-        return Response({'article':serializer.data,'read_times':ReadRecord.objects.filter(article=article).count()})
+        return Response(serializer.data)
 
 
 
@@ -78,7 +81,7 @@ class HomeRecommendView(APIView):
         }
 
         for tag in LocationTag.objects.all():
-            get_articles = ArticlePost.objects.filter(tag=tag).all().order_by('-read_times')[:10]
+            get_articles = ArticlePost.objects.filter(tag=tag).order_by('-read_times')[:10]
             articles_serializers = ArticlePostSerializer(get_articles,many=True)
             section = HomeTopRecommendSerializer(data={'id':tag.id,'tag': LocationTagSerializer(tag).data, 'articles':articles_serializers.data})
             section.is_valid()

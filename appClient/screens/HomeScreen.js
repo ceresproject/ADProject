@@ -5,14 +5,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  AsyncStorage,
   TouchableOpacity,
   View,
   StatusBar,
   SafeAreaView,
+  RefreshControl,
+  ActivityIndicator,
   ImageBackground,
   FlatList
 } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Icon } from 'expo';
 
 import api from '../constants/APIs';
 import { WebBrowser } from 'expo';
@@ -24,43 +27,68 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
   state = {
-    recommendResults: []
+    recommendResults: [],
+    refreshing: false
   }
 
   componentDidMount() {
+    this.setState({loading: true})
     this._loadHomeResults()
   }
   _keyExtractor = (item, index) => item.id.toString();
   
   render() {
-    return (
-      <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
-        <View style={styles.navbar}>
-          <Text style={styles.title}>Singapore</Text>
-          <Text>C</Text>
+    if (this.state.loading){
+      return (
+        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+        <ActivityIndicator size="large" color="#0000ff" />
         </View>
-        <ScrollView nestedScrollEnabled={true} style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.container}>
-            <FlatList
-            data={this.state.recommendResults}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._ifGetRecommendResults}>
+      )    
+    } else {
+      return (
+        <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
+          <StatusBar barStyle={'dark-content'} translucent={true}  backgroundColor={WHITE}/> 
+
+          <View style={styles.navbar}>
+            <Text style={styles.title}>Explore</Text>
+            <TouchableOpacity
+            onPress={()=>this._logout()}
+            ><Icon.Ionicons
+            name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'}
+            size={26}
+            color={'orange'}
+          /></TouchableOpacity>
+          </View>
+          <ScrollView 
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          nestedScrollEnabled={true} style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <View style={styles.container}>
+              <FlatList
+              data={this.state.recommendResults}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._ifGetRecommendResults}>
 
 
-            </FlatList>
-          </View>
-          <View style={styles.recommendPart}>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+              </FlatList>
+            </View>
+            <View style={styles.recommendPart}>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      );
+    }
   }
 
   _ifGetRecommendResults=({item})=> {
     return (
       <View style={styles.recommendPart} key={item.id}>
       <Text style={styles.label}>{item.tag.tag}</Text>
-      <TouchableOpacity style={styles.touchA} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
+      <TouchableOpacity style={[styles.touchA,styles.shadow]} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
         <ImageBackground source={{uri:api.apis.MAIN_URL+ item.articles[0].images[0].url}}
           imageStyle={{ borderRadius: 9 }}
           style={styles.recommendA}>
@@ -78,7 +106,7 @@ export default class HomeScreen extends React.Component {
       keyExtractor={this._keyExtractor}
       data={item.articles.slice(1,10)}
       renderItem={({item}) =>
-      <TouchableOpacity style={styles.touchrp} onPress={() => this._goToLocationTagDetail(item.id)}>
+      <TouchableOpacity style={[styles.touchrp, styles.shadow]} onPress={() => this._goToLocationTagDetail(item.id)}>
 
         <ImageBackground source={{uri: api.apis.MAIN_URL+ item.images[0].url}}
           imageStyle={{ borderRadius: 9 }}
@@ -108,7 +136,29 @@ export default class HomeScreen extends React.Component {
     const that = this;
     axios({url: api.apis.HOME_RECOMMEND, method:'get'}).then(res=>{
       //console.log(res.data)
-      that.setState({recommendResults: res.data.results})
+      that.setState({recommendResults: res.data.results,refreshing: false, loading: false})
+    }).catch(error=>{
+      that.setState({refreshing: true, loading: false});
+
+    })
+  }
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this._loadHomeResults()
+  }
+  async _logout() {
+    const that = this;
+    const token = await AsyncStorage.getItem('token');
+    console.log(token)
+    axios({url: api.apis.LOGOUT, method:'post' ,data: {
+        token: token
+    }}).then(res=>{
+      if (res.data.detail){
+        that.props.navigation.navigate('Auth');
+      }
+    }).catch(error=>{
+        console.log(error)
+
     })
   }
 }
@@ -227,5 +277,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     color: 'white'
+  },
+  shadow: {
+
   }
 });

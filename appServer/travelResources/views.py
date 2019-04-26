@@ -28,10 +28,11 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         user = self.request.user
-        queryset = BookMark.objects.filter(user=user)
+        queryset = BookMark.objects.filter(user=user).order_by('-create_date')
         bookmarks = self.paginate_queryset(queryset)
         bookmarks = BookmarkSerializer(bookmarks, many=True)
         return self.get_paginated_response(bookmarks.data)
+
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = ArticlePost.objects.all()

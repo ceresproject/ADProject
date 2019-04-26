@@ -77,6 +77,7 @@ class UserFollow(models.Model):
 class BookMark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ForeignKey(LocationTag, on_delete=models.CASCADE)
+    num_of_articles = models.IntegerField(null=False)
     create_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

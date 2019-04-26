@@ -38,6 +38,7 @@ export default class LinksScreen extends React.Component {
     );
   }
 }
+
 const BLACK = '#2a2b2d'
 const WHITE = '#f5f4f9'
 const MARGIN = 9

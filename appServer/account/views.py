@@ -31,10 +31,10 @@ class RegisterUserAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user = User.objects.create_user(**request.data)
+            user = User.objects.create(username=request.data['username'])
             user.set_password(request.data['password'])
             user.save()
-            return Response({'detail': True})
+            return Response({'detail': True, 'user': UserSerializer(user).data})
         except:
             return Response({'detail': False})
 

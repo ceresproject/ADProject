@@ -13,6 +13,7 @@ from rest_framework.generics import *
 import json
 from .serializer import *
 from .models import *
+from rest_framework import status
 
 class MyPageNumber(PageNumberPagination):
     page_size = 10
@@ -28,9 +29,7 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         user = self.request.user
-        print(user.id)
         queryset = BookMark.objects.filter(user=user).all().order_by('-create_date')
-        print(queryset)
         bookmarks = self.paginate_queryset(queryset)
         bookmarks = BookmarkSerializer(bookmarks, many=True)
         return self.get_paginated_response(bookmarks.data)
@@ -51,13 +50,10 @@ class ArticleViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
-
 class LocationTagViewSet(viewsets.ModelViewSet):
     queryset = LocationTag.objects.all()
     serializer_class = LocationTagSerializer
     permission_classes = (permissions.AllowAny, )
-
 
 
 class HomeTopRecommendSerializer(serializers.Serializer):
@@ -90,7 +86,6 @@ class HomeRecommendView(APIView):
             section.is_valid()
             articles.append(section.data)
 
-
         #articles = articles.filter(create_date__range=[(today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today_date.strftime("%Y-%m-%d")]).order_by("-read_times")
         return Response({'results':articles})
 
@@ -103,10 +98,13 @@ class BookmarkView(APIView):
         tag_id = params['id']
         try:
             location = LocationTag.objects.get(id=tag_id)
+            BookMark.objects.get_or_create(user=self.request.user, tag=location,
+                                           num_of_articles=ArticlePost.objects.filter(tag=location).count())
+
         except:
             return Response({'status': False,'detail': 'This location does not exist!'})
-        BookMark.objects.get_or_create(user=self.request.user, tag=location)
         return Response({'status': True,'detail': 'Marked success!'})
+
 
 class RankAPIkView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
@@ -123,18 +121,19 @@ class RankAPIkView(APIView):
 
 
 class SearchAPIView(ListAPIView):
-    permission_classes = (permissions.IsAuthenticated, )
+    #permission_classes = (permissions.IsAuthenticated, )
+    queryset = ArticlePost.objects.all()
 
     def post(self, request):
         params = self.request.data
         key = params['key']
         try:
-            queryset = ArticlePost.objects.filter(title__icontains=key).order_by('-create_date')
+            queryset = ArticlePost.objects.filter(Q(title__icontains=key) | Q(tag__tag__icontains=key)).order_by('-create_date')
             articles = self.paginate_queryset(queryset)
             articles = ArticlePostSerializer(articles,many=True)
             print(articles)
         except:
-            return Response({'detail': 'No results'})
+            return Response({'detail': 'No results'},status.HTTP_404_NOT_FOUND)
 
         return self.get_paginated_response(articles.data)
 

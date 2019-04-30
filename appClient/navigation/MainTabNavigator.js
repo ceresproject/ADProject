@@ -14,17 +14,6 @@ const HomeStack = createStackNavigator({
   ArticleDetail: ArticleDetailScreen
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Explore',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-compass' : 'md-compass'}
-
-    />
-  ),
-};
-
 HomeStack.navigationOptions = ({ navigation }) => {
   let tabBarLabel = 'Explore';
   let tabBarIcon = ({ focused }) => (
@@ -107,4 +96,8 @@ export default createBottomTabNavigator({
   SearchStack,
   LinksStack,
   SettingsStack,
+},{
+  tabBarOptions: {
+    showLabel: false
+  }
 });

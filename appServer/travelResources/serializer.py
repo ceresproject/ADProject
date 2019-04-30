@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-
+from account.serializer import *
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
@@ -33,6 +33,7 @@ class LocationTagSerializer(serializers.ModelSerializer):
 
 class BookmarkSerializer(serializers.ModelSerializer):
     tag = LocationTagSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
     class Meta:
         model = BookMark
         fields = '__all__'

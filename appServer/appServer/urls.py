@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^auth/', TokenAuthCheckAPIView.as_view()),
     url(r'^api/home/recommend/', HomeRecommendView.as_view()),
     url(r'^api/makeMark/', BookmarkView.as_view()),
-    url(r'^api/makrRank/', RankAPIkView.as_view()),
+    url(r'^api/makeRank/', RankAPIkView.as_view()),
     url(r'^api/search/', SearchAPIView.as_view()),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 

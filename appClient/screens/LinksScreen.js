@@ -26,9 +26,14 @@ export default class LinksScreen extends React.Component {
   state = {
     bookMarkData: [{
       tag: {
+        id: '',
+        create_date: '',
         tag: '',
-        images: []
-      }
+        images: [{
+          url: ''
+        }]
+      },
+      id:''
     }],
     refreshing: false
   }
@@ -48,7 +53,6 @@ export default class LinksScreen extends React.Component {
     axios({url: api.apis.BOOKMARK, method:'get', headers: {
       'Authorization': 'Token ' + token
     }}).then(res=>{
-      console.log(res.data)
       that.setState({bookMarkData: res.data.results,refreshing: false, loading: false})
     }).catch(error=>{
       that.setState({refreshing: true, loading: false});
@@ -64,33 +68,33 @@ export default class LinksScreen extends React.Component {
       )  
     } else {
       return (
-        <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
+        <SafeAreaView style={[styles.container,{padding: MARGIN, paddingTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
           <View style={styles.navbar}>
             <Text style={styles.title}>Concern</Text>
             <Text>C</Text>
           </View>
-          <FlatList 
-          nestedScrollEnabled={true} 
-          style={styles.container} 
-          data={this.state.bookMarkData}
-          contentContainerStyle={styles.contentContainer}
-          renderItem={({item})=>{
-          <View style={styles.recommendPart} key={item.id}>
-                <TouchableOpacity style={[styles.touchA,styles.shadow]} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
-                  <ImageBackground source={{uri:api.apis.MAIN_URL+ item.tag.images[0]}}
-                    imageStyle={{ borderRadius: 9 }}
-                    style={styles.recommendA}>
-                    <LinearGradient 
-                    colors={['transparent', 'rgba(0,0,0,0.8)']}
-                    style={styles.recommendAB}>
-                    <Text style={styles.article_title}>{item.tag.tag}</Text>
-                    </LinearGradient>
-                  </ImageBackground>
-                </TouchableOpacity>
-                </View>
-          }}>   
-  
-          </FlatList>
+          <View style={styles.container}>
+            <FlatList 
+            data={this.state.bookMarkData}
+            keyExtractor={this._keyExtractor}
+            style={{padding: MARGIN}}
+            renderItem={({item})=>
+            <TouchableOpacity style={[styles.touchA,styles.shadow]} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
+            <ImageBackground source={{uri:api.apis.MAIN_URL+ item.tag.images[0].url}}
+              imageStyle={{ flex:1, borderRadius: MARGIN }}
+              style={styles.recommendA}>
+              <LinearGradient 
+              colors={['rgba(0,0,0,0.4)', 'transparent', 'rgba(0,0,0,0.8)']}
+              style={{flex:1, width: '100%', borderRadius: MARGIN}}>
+                <Text style={[styles.label,{color: 'white', fontWeight: '600', margin: MARGIN}]}># {item.tag.tag}</Text>
+
+              </LinearGradient>
+            </ImageBackground>
+          </TouchableOpacity>
+            }>   
+    
+            </FlatList>
+          </View>
         </SafeAreaView>
       );
     }
@@ -99,7 +103,7 @@ export default class LinksScreen extends React.Component {
 
 const BLACK = '#2a2b2d'
 const WHITE = '#f5f4f9'
-const MARGIN = 9
+const MARGIN = 13
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -139,7 +143,6 @@ const styles = StyleSheet.create({
     margin:MARGIN
   },
   rp: {
-    backgroundColor: 'blue',
     height: 80,
     width: 100,
     alignItems: 'flex-start',
@@ -152,7 +155,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: '100%',
     minHeight: 120,
-    backgroundColor: 'blue',
     borderRadius: 4
   }, 
   recommendScroll: {

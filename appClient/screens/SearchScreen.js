@@ -22,6 +22,14 @@ export default class LinksScreen extends React.Component {
     super(props);
     this.state = {text: ''};
   }
+  _search () {
+    axios({url: api.apis.SEARCH, method:'post' ,data: {
+      key: this.state.text
+    }}).then(res=>{
+        that.props.navigation.navigate('Main');
+        console.log(res.data)
+    })
+  }
   render() {
     return (
       <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
@@ -30,6 +38,7 @@ export default class LinksScreen extends React.Component {
             style={styles.searchBar}
             placeholder="Type here to translate!"
             onChangeText={(text) => this.setState({text})}
+            onSubmitEditing={()=> this._search()}
           />
         </View>
         <View style={styles.recommendPart}>

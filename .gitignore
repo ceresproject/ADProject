@@ -114,3 +114,4 @@ dmypy.json
 .pyre/
 appServer/.DS_Store
 appServer/.idea/workspace.xml
+appServer/.vscode/settings.json

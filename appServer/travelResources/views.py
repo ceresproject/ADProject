@@ -38,7 +38,6 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = ArticlePost.objects.all()
     serializer_class = ArticlePostSerializer
-    permission_classes = (permissions.IsAuthenticated, )
 
     def retrieve(self, request, pk=None):
         article = ArticlePost.objects.get(id=pk)
@@ -131,7 +130,6 @@ class SearchAPIView(ListAPIView):
             queryset = ArticlePost.objects.filter(Q(title__icontains=key) | Q(tag__tag__icontains=key)).order_by('-create_date')
             articles = self.paginate_queryset(queryset)
             articles = ArticlePostSerializer(articles,many=True)
-            print(articles)
         except:
             return Response({'detail': 'No results'},status.HTTP_404_NOT_FOUND)
 

@@ -52,14 +52,25 @@ const SearchStack = createStackNavigator({
   Search: SearchScreen,
 });
 
-SearchStack.navigationOptions = {
-  tabBarLabel: 'Search',
-  tabBarIcon: ({ focused }) => (
+SearchStack.navigationOptions = ({ navigation }) => {
+  let tabBarLabel = 'Search';
+  let tabBarIcon = ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+
     />
-  ),
+  )
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel,
+    tabBarIcon,
+  };
 };
 
 const LinksStack = createStackNavigator({

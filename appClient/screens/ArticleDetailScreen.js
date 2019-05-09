@@ -68,7 +68,7 @@ export default class ArticleDetailScreen extends React.Component {
       <TouchableOpacity
       onPress={() => navigation.goBack()}>
       <Icon.Ionicons
-        name={Platform.OS === 'ios' ? 'ios-backspace' : 'md-backspace'}
+        name={Platform.OS === 'ios' ? 'ios-arrow-dropleft-circle' : 'md-md-arrow-dropleft-circle'}
         size={26}
         color={'white'}
       />
@@ -93,6 +93,11 @@ export default class ArticleDetailScreen extends React.Component {
           colors={['transparent', BLACK]}>
             <View style={{margin:MARGIN*2, justifyContent:'flex-end'}}>
             <Text style={[styles.title,{marginTop:MARGIN*2}]}>{this.state.article.title}</Text>
+            <View style={[styles.tag,{backgroundColor:'orange',color:'black'}]}><Text style={styles.tagText}>Mark this <Icon.Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-bookmark' : 'md-bookmark'}
+                  size={14}
+                  color={'white'}
+                /> {this.state.article.tag.tag}</Text></View>
             <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center', marginTop: MARGIN*2}}>
               <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center',marginRight:MARGIN}}>
                 <Icon.Ionicons
@@ -161,14 +166,14 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontWeight: '400',
     color: WHITE,
-    lineHeight:30
+    lineHeight:30,
+    fontFamily: 'NotoSansSC-Medium',
   },
   title: {
     fontSize: 26,
-    fontWeight: '800',
     color: WHITE,
+    fontFamily: 'NotoSansSC-Bold',
     
   },
   recommendPart: {
@@ -213,6 +218,6 @@ const styles = StyleSheet.create({
     marginLeft: MARGIN,
     marginRight: MARGIN,
     textAlign:'center',
-    fontWeight: '600'
+    fontFamily: 'NotoSansSC-Medium',
   },
 });

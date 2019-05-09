@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ImageBackground,
   View,
   FlatList,
   TextInput,
@@ -13,21 +14,46 @@ import {
   SafeAreaView
 } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
-
+import api from '../constants/APIs';
+import { Icon, LinearGradient } from 'expo';
+import axios from "axios";
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {text: '',
+    refreshing: false,
+    items: {
+      next: null,
+      previous: null,
+      count: 0,
+      results: []
+    }
+  };
   }
+  componentDidMount() {
+    this.setState({loading: true})
+  }
+  _goToArticelDetail(id) {
+    this.props.navigation.navigate('ArticleDetail', {
+      itemId: id,
+    });
+  }
+  _keyExtractor = (item, index) => item.id.toString();
+  
   _search () {
+    const that = this;
+    that.setState({refreshing: false, loading: true});
+
     axios({url: api.apis.SEARCH, method:'post' ,data: {
       key: this.state.text
     }}).then(res=>{
-        that.props.navigation.navigate('Main');
-        console.log(res.data)
+      that.setState({refreshing: false, loading: false, items: res.data});
+    }).catch(error=>{
+      that.setState({refreshing: true, loading: false});
+
     })
   }
   render() {
@@ -36,20 +62,37 @@ export default class LinksScreen extends React.Component {
         <View style={{padding: 9}}>
           <TextInput
             style={styles.searchBar}
-            placeholder="Type here to translate!"
+            placeholder="Search tag and location"
             onChangeText={(text) => this.setState({text})}
             onSubmitEditing={()=> this._search()}
           />
         </View>
-        <View style={styles.recommendPart}>
-            <ScrollView showsHorizontalScrollIndicator={false} style={styles.recommendScroll}>
-              <View style={{flexDirection:'row'}}>
-                <View style={styles.tag}><Text style={styles.tagText}>#bugis</Text></View>
-              </View>
-              <View style={styles.recommendA}>
+        <View style={styles.container}>
+            <FlatList
+              data={this.state.items.results}
+              keyExtractor={this._keyExtractor}
+              renderItem={({item})=>
+                (              
+                  <TouchableOpacity style={styles.recommendPart} onPress={()=>this._goToArticelDetail(item.id)}>
+                  <ImageBackground source={{uri:api.apis.MAIN_URL+ item.images[0].url}}
+                    imageStyle={{ borderRadius: 9 }}
+                    style={styles.recommendA}>
+                    <LinearGradient 
+                    colors={['transparent', 'rgba(0,0,0,0.8)']}
+                    style={styles.recommendAB}>
+                    <View style={styles.tag}>
+                    <Text style={styles.tagText}>{item.tag.tag}</Text>
+                    </View>
+                    <Text style={[styles.title,{color: 'white', fontSize: 18}]}>{item.title}</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                )
+              }>
 
-              </View>
-            </ScrollView>
+
+            </FlatList>
+
           </View>
       </SafeAreaView>
     );
@@ -75,7 +118,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     borderRadius: 16,
-    backgroundColor: 'red',
+    backgroundColor: '#666666',
     padding: 9,
     marginTop:9,
     marginRight:9
@@ -96,11 +139,11 @@ const styles = StyleSheet.create({
   },
   recommendPart: {
     alignItems: 'flex-start',
-    flex:1,
-    margin:MARGIN
+    flex: 1,
+    margin:MARGIN,
+    marginBottom: 0
   },
   rp: {
-    backgroundColor: 'blue',
     height: 80,
     width: 100,
     alignItems: 'flex-start',
@@ -113,9 +156,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: '100%',
     minHeight: 120,
-    backgroundColor: 'blue',
     borderRadius: 4
   }, 
+  recommendAB: {
+    flex:1,
+    width: '100%',
+    padding: 9,
+    borderRadius: 9,
+ 
+    justifyContent: 'space-between',
+    alignItems:'flex-start'
+  },
   recommendScroll: {
     width: '100%'
   }

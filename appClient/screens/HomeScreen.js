@@ -51,13 +51,7 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.navbar}>
             <Text style={styles.title}>Explore</Text>
-            <TouchableOpacity
-            onPress={()=>this._logout()}
-            ><Icon.Ionicons
-            name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'}
-            size={26}
-            color={'orange'}
-          /></TouchableOpacity>
+
           </View>
           <ScrollView 
           refreshControl={
@@ -192,7 +186,7 @@ const styles = StyleSheet.create({
   contentContainer: {
   },
   navbar: {
-    justifyContent: "space-between",
+    justifyContent: "center",
     paddingHorizontal: MARGIN,
     alignItems: 'center',
     height: 44,
@@ -201,11 +195,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 20,
     fontWeight: '600',
-    color: _colorCheck('text')
+    color: _colorCheck('text'),
+    fontFamily: 'NotoSansSC-Medium',
   },
   title: {
     fontSize: 26,
     fontWeight: '800',
+    fontFamily: 'NotoSansSC-Bold',
     color: _colorCheck('text')
   },
   recommendPart: {
@@ -270,13 +266,13 @@ const styles = StyleSheet.create({
   },
   article_title: {
     fontSize: 20,
-    fontWeight: '600',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'NotoSansSC-Medium',
   },
   article_title_sub: {
     fontSize: 14,
-    fontWeight: '400',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'NotoSansSC-Medium',
   },
   shadow: {
 

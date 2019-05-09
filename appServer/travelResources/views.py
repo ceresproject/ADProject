@@ -41,7 +41,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         article = ArticlePost.objects.get(id=pk)
-        ReadRecord.objects.create(article=article, user=self.request.user)
+        ReadRecord.objects.get_or_create(article=article, user=self.request.user)
         read_times = ReadRecord.objects.filter(article=article).count()
         ArticlePostSerializer(article).update(instance=article, validated_data={'read_times': read_times})
         article = ArticlePost.objects.get(id=pk)
@@ -77,8 +77,8 @@ class HomeRecommendView(APIView):
             'tag': None,
             'results': None
         }
-
-        for tag in LocationTag.objects.all():
+        tags = LocationTag.objects.all()
+        for tag in tags:
             get_articles = ArticlePost.objects.filter(tag=tag).order_by('-read_times')[:10]
             articles_serializers = ArticlePostSerializer(get_articles,many=True)
             section = HomeTopRecommendSerializer(data={'id':tag.id,'tag': LocationTagSerializer(tag).data, 'articles':articles_serializers.data})
@@ -127,12 +127,26 @@ class SearchAPIView(ListAPIView):
         params = self.request.data
         key = params['key']
         try:
-            queryset = ArticlePost.objects.filter(Q(title__icontains=key) | Q(tag__tag__icontains=key)).order_by('-create_date')
+            queryset = ArticlePost.objects.filter(Q(title__icontains=key) | Q(tag__tag__icontains=key) | Q(type__name__icontains=key)).order_by('-create_date')
             articles = self.paginate_queryset(queryset)
             articles = ArticlePostSerializer(articles,many=True)
         except:
-            return Response({'detail': 'No results'},status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'No results'},status.HTTP_204_NO_CONTENTt)
 
         return self.get_paginated_response(articles.data)
 
+
+class HistroyAPIView(ListAPIView):
+    #permission_classes = (permissions.IsAuthenticated, )
+    queryset = ReadRecord.objects.all()
+
+    def get(self, request):
+        user = self.request.user
+        records = ReadRecord.objects.filter(user=user).order_by('-read_date')
+        try:
+            records = self.paginate_queryset(records)
+            records = ReadRecordSerializer(records,many=True)
+        except:
+            return Response({'detail': 'No results'})
+        return self.get_paginated_response(records.data)
 #lass DefaultSearchPageResults(ListAPIView):

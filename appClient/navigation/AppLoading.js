@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import api from '../constants/APIs';
 import axios from "axios";
+import { Font } from 'expo';
 import { ExpoLinksView } from '@expo/samples';
 
 export default class AppLoading extends React.Component {
@@ -25,7 +26,15 @@ export default class AppLoading extends React.Component {
     header: null,
     };
     state = {username: '', password: ''};
-    componentWillMount () {
+    async componentWillMount () {
+      await Font.loadAsync({
+        'NotoSansSC-Regular': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Regular.otf'),
+        'NotoSansSC-Bold': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Bold.otf'),
+        'NotoSansSC-Light': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Light.otf'),
+        'NotoSansSC-Medium': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Medium.otf'),
+        'NotoSansSC-Black': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Black.otf'),
+        'NotoSansSC-Thin': require('../assets/fonts/Noto_Sans_SC/NotoSansSC-Thin.otf')
+      });
       this._authToken()
     }
     async _authToken () {

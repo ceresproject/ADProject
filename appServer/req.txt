@@ -7,6 +7,7 @@ django-filter==2.1.0
 djangorestframework==3.9.2
 idna==2.8
 Markdown==3.1
+mysqlclient==1.4.2.post1
 Naked==0.1.31
 Pillow==6.0.0
 Pygments==2.3.1
@@ -14,5 +15,5 @@ pytz==2018.9
 PyYAML==5.1
 requests==2.21.0
 shellescape==3.4.1
-sqlparse==0.3.0
+sqlparse==0.3.0 
 urllib3==1.24.1

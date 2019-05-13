@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.19, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.24, for macos10.14 (x86_64)
 --
 -- Host: localhost    Database: ad
 -- ------------------------------------------------------
--- Server version	5.7.19-0ubuntu0.16.04.1
+-- Server version	5.7.24
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -142,7 +142,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +151,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$150000$D0K5gYktHaH4$irOBn0OrqSoGEHLWX0rQUn6Hdnbpbro3zyF1DARD8e0=',NULL,1,'qintianqi','','','929245755@qq.com',1,1,'2019-04-13 14:03:04.610771'),(2,'pbkdf2_sha256$150000$HuzmJE7lHfAx$uV5irLsth6EyzwMkpDYZBVe2qBDNmfi2Ca37Tux9+aE=','2019-04-26 01:42:00.143467',1,'admin','','','',1,1,'2019-04-13 14:03:54.709494'),(3,'pbkdf2_sha256$150000$FuIOFRDVxwJA$K86hTVx9RnUvS/vbwAZQX4W/gYYZoACTE9DfJKVTQuI=',NULL,0,'Tinchy','','','',0,1,'2019-04-14 12:49:23.304263');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$150000$D0K5gYktHaH4$irOBn0OrqSoGEHLWX0rQUn6Hdnbpbro3zyF1DARD8e0=',NULL,1,'qintianqi','','','929245755@qq.com',1,1,'2019-04-13 14:03:04.610771'),(2,'pbkdf2_sha256$150000$HuzmJE7lHfAx$uV5irLsth6EyzwMkpDYZBVe2qBDNmfi2Ca37Tux9+aE=','2019-05-08 02:39:42.934141',1,'admin','','','',1,1,'2019-04-13 14:03:54.709494'),(3,'pbkdf2_sha256$150000$FuIOFRDVxwJA$K86hTVx9RnUvS/vbwAZQX4W/gYYZoACTE9DfJKVTQuI=','2019-04-26 02:54:49.149730',0,'Tinchy','','','',0,1,'2019-04-14 12:49:23.304263'),(5,'pbkdf2_sha256$150000$pRF4ScwrT2mO$SJTqXrZcQtLwdmP1EV4HfvOkjV9sK8zA8EbORyvqjeY=',NULL,0,'City','','','',0,1,'2019-04-30 02:29:53.188455'),(6,'pbkdf2_sha256$150000$RednSTsvZXZi$4k/5KMTWEwx2WS2W36RrHDYL3+Eb0flLbUF7o9TouHo=',NULL,0,'Cit1y','','','',0,1,'2019-04-30 02:41:30.894938');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +234,7 @@ CREATE TABLE `authtoken_token` (
 
 LOCK TABLES `authtoken_token` WRITE;
 /*!40000 ALTER TABLE `authtoken_token` DISABLE KEYS */;
-INSERT INTO `authtoken_token` VALUES ('0706584da342ce99d4ca6022e95062ae269e6b2f','2019-04-25 15:19:10.165307',2);
+INSERT INTO `authtoken_token` VALUES ('0706584da342ce99d4ca6022e95062ae269e6b2f','2019-04-25 15:19:10.165307',2),('a46398d17dc05374e1c4d743af2bcd238efff88e','2019-04-30 02:30:35.394998',5);
 /*!40000 ALTER TABLE `authtoken_token` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,7 +346,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('29e2uzs6t50tzzjcalk4kxjicoix70uj','YjhkMWE2OTFlMGMwZDM0YzUyZDI1MDM4MTJlZGRkMDc0ZTcwMmFiYjp7Il9hdXRoX3VzZXJfaGFzaCI6IjAyNzQxMzYyMjc0OWZkNzM0ODM5ZmU0ZGJkZWMyMWZiNGU2ODBjYTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2019-04-29 02:36:56.016884'),('4tvduflkhsvkdmytpt8h90awsxorj252','YjFkMjc0ZWYxYTc0M2EzN2U4ODBkMTU5OTVlNDdiZjI4ZmIyZGRjZjp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiMDI3NDEzNjIyNzQ5ZmQ3MzQ4MzlmZTRkYmRlYzIxZmI0ZTY4MGNhNCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2019-05-10 01:42:00.147287'),('eqrv1r427qugha9woj2annd8icq6yczn','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-04-29 00:39:58.661667'),('pn2jlfhonp7ss0sc6uqv058a4xt3zui1','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-04-28 07:03:04.714097'),('sj2iym3t07by4bzyawav8mw4a2bxjuw3','YjhkMWE2OTFlMGMwZDM0YzUyZDI1MDM4MTJlZGRkMDc0ZTcwMmFiYjp7Il9hdXRoX3VzZXJfaGFzaCI6IjAyNzQxMzYyMjc0OWZkNzM0ODM5ZmU0ZGJkZWMyMWZiNGU2ODBjYTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2019-05-01 01:31:19.594381'),('xskusu2zhijczhgfdwc0h4bffyigmwhl','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-05-09 06:42:18.501068');
+INSERT INTO `django_session` VALUES ('29e2uzs6t50tzzjcalk4kxjicoix70uj','YjhkMWE2OTFlMGMwZDM0YzUyZDI1MDM4MTJlZGRkMDc0ZTcwMmFiYjp7Il9hdXRoX3VzZXJfaGFzaCI6IjAyNzQxMzYyMjc0OWZkNzM0ODM5ZmU0ZGJkZWMyMWZiNGU2ODBjYTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2019-04-29 02:36:56.016884'),('4tvduflkhsvkdmytpt8h90awsxorj252','YjFkMjc0ZWYxYTc0M2EzN2U4ODBkMTU5OTVlNDdiZjI4ZmIyZGRjZjp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiMDI3NDEzNjIyNzQ5ZmQ3MzQ4MzlmZTRkYmRlYzIxZmI0ZTY4MGNhNCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2019-05-10 01:42:00.147287'),('eqrv1r427qugha9woj2annd8icq6yczn','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-04-29 00:39:58.661667'),('pn2jlfhonp7ss0sc6uqv058a4xt3zui1','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-04-28 07:03:04.714097'),('qsggw736wahe13ao4jcdnoscqt14mwq2','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-05-22 02:39:42.939524'),('sj2iym3t07by4bzyawav8mw4a2bxjuw3','YjhkMWE2OTFlMGMwZDM0YzUyZDI1MDM4MTJlZGRkMDc0ZTcwMmFiYjp7Il9hdXRoX3VzZXJfaGFzaCI6IjAyNzQxMzYyMjc0OWZkNzM0ODM5ZmU0ZGJkZWMyMWZiNGU2ODBjYTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=','2019-05-01 01:31:19.594381'),('xskusu2zhijczhgfdwc0h4bffyigmwhl','YTFhYTVkNTg5ZWI2MTVjYzdmM2E3YThjYTg3YzVmOTYzNWVjMDg5OTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjc0MTM2MjI3NDlmZDczNDgzOWZlNGRiZGVjMjFmYjRlNjgwY2E0In0=','2019-05-09 06:42:18.501068');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,6 +440,37 @@ LOCK TABLES `travelResources_articlepost_type` WRITE;
 /*!40000 ALTER TABLE `travelResources_articlepost_type` DISABLE KEYS */;
 INSERT INTO `travelResources_articlepost_type` VALUES (2,2,3),(3,3,3),(4,4,1),(5,5,1),(6,6,1),(7,7,2),(8,8,2),(9,9,2),(10,10,2),(11,11,3),(12,12,3),(13,13,3),(14,14,3),(15,15,1),(16,16,1),(17,17,1),(18,18,2),(19,19,2),(20,20,2),(21,21,2),(22,22,3),(23,23,3),(24,24,3),(25,25,1),(26,26,1),(27,27,1),(28,28,2),(29,29,2),(30,30,2),(31,31,2),(32,32,3),(33,33,3),(34,34,1),(35,35,1),(36,36,1),(37,37,1),(38,38,2),(39,39,2),(40,40,2),(41,41,2);
 /*!40000 ALTER TABLE `travelResources_articlepost_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelResources_bookmark`
+--
+
+DROP TABLE IF EXISTS `travelResources_bookmark`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `travelResources_bookmark` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `num_of_articles` int(11) NOT NULL,
+  `create_date` datetime(6) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `travelResources_book_tag_id_053ed95d_fk_travelRes` (`tag_id`),
+  KEY `travelResources_bookmark_user_id_c50364d3_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `travelResources_book_tag_id_053ed95d_fk_travelRes` FOREIGN KEY (`tag_id`) REFERENCES `travelResources_locationtag` (`id`),
+  CONSTRAINT `travelResources_bookmark_user_id_c50364d3_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelResources_bookmark`
+--
+
+LOCK TABLES `travelResources_bookmark` WRITE;
+/*!40000 ALTER TABLE `travelResources_bookmark` DISABLE KEYS */;
+INSERT INTO `travelResources_bookmark` VALUES (1,12,'2019-04-26 02:46:52.333402',1,1),(2,12212,'2019-04-26 02:55:00.853931',1,2),(3,12212,'2019-04-26 02:55:07.788891',1,3),(4,12,'2019-04-29 01:21:43.322898',1,1),(5,1,'2019-04-29 01:25:21.944085',1,2),(6,11,'2019-04-29 01:43:46.780089',4,3),(7,10,'2019-04-29 01:45:28.950890',5,3);
+/*!40000 ALTER TABLE `travelResources_bookmark` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -670,4 +701,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-26  9:47:51
+-- Dump completed on 2019-05-10  9:47:29

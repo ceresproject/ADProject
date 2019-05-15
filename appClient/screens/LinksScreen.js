@@ -46,7 +46,12 @@ export default class LinksScreen extends React.Component {
     this._getBookMarkData()
   }
   _keyExtractor = (item, index) => item.id.toString();
-  
+
+    _ifScroll = async ({id}) => {
+      if (await id){
+          (<Text>ssss</Text>)
+      }
+  }
   async _getBookMarkData() {
     const that = this;
     const token = await AsyncStorage.getItem('token');
@@ -73,28 +78,27 @@ export default class LinksScreen extends React.Component {
             <Text style={styles.title}>Concern</Text>
             <Text>C</Text>
           </View>
-          <View style={styles.container}>
-            <FlatList 
-            data={this.state.bookMarkData}
-            keyExtractor={this._keyExtractor}
-            style={{padding: MARGIN}}
-            renderItem={({item})=>
-            <TouchableOpacity style={[styles.touchA,styles.shadow]} onPress={() => this._goToLocationTagDetail(item.articles[0].id)}>
-            <ImageBackground source={{uri:api.apis.MAIN_URL+ item.tag.images[0].url}}
-              imageStyle={{ flex:1, borderRadius: MARGIN }}
-              style={styles.recommendA}>
-              <LinearGradient 
-              colors={['rgba(0,0,0,0.4)', 'transparent', 'rgba(0,0,0,0.8)']}
-              style={{flex:1, width: '100%', borderRadius: MARGIN}}>
-                <Text style={[styles.label,{color: 'white', fontWeight: '600', margin: MARGIN}]}># {item.tag.tag}</Text>
+          <View style={[styles.container,{height:46}]}>
 
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
-            }>   
-    
-            </FlatList>
+              <FlatList
+                  data={this.state.bookMarkData}
+                  keyExtractor={this._keyExtractor}
+                  style={{padding: MARGIN, height: 46}}
+                  horizontal={true}
+                  renderItem={({item})=>
+                        <View style={styles.tab}>
+                            <Text style={styles.tabText}>{item.tag.tag}</Text>
+                        </View>
+                  }>
+
+              </FlatList>
+
           </View>
+            <View style={styles.container}>
+
+
+
+            </View>
         </SafeAreaView>
       );
     }
@@ -159,5 +163,12 @@ const styles = StyleSheet.create({
   }, 
   recommendScroll: {
     width: '100%'
-  }
+  },
+    tab:{
+      padding: 10
+    },
+    tabText: {
+        fontSize: 20,
+        fontFamily: 'NotoSansSC-Medium',
+    }
 });

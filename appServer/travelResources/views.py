@@ -41,6 +41,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         article = ArticlePost.objects.get(id=pk)
+        if ReadRecord.objects.filter(article=article, user=self.request.user).count()>1:
+            ReadRecord.objects.filter(article=article, user=self.request.user).delete()
         ReadRecord.objects.get_or_create(article=article, user=self.request.user)
         read_times = ReadRecord.objects.filter(article=article).count()
         ArticlePostSerializer(article).update(instance=article, validated_data={'read_times': read_times})

@@ -44,7 +44,9 @@ export default class ArticleDetailScreen extends React.Component {
 
     this._getTagDetail()
   }
+
   itemId = this.props.navigation.getParam('itemId', 'NO-ID');
+
   async _getTagDetail() {
     const token = await AsyncStorage.getItem('token')
     let that = this;
@@ -52,12 +54,24 @@ export default class ArticleDetailScreen extends React.Component {
       that.setState({header_images: res.data.images})
       that.setState({article: res.data})
       that.setState({loadding: false})
-
     }).catch(error=>{
       console.error(error)
       this.setState({loadding: false})
       this.props.navigation.goBack()
     })
+  }
+  async _mark() {
+      const token = await AsyncStorage.getItem('token')
+      let that = this;
+      axios({url: api.apis.ARTICLE + JSON.stringify(this.itemId) + '/', method:'get', headers: {'Authorization': 'Token ' + token}}).then(res=>{
+          that.setState({header_images: res.data.images})
+          that.setState({article: res.data})
+          that.setState({loadding: false})
+      }).catch(error=>{
+          console.error(error)
+          this.setState({loadding: false})
+          this.props.navigation.goBack()
+      })
   }
   _keyExtractor = (item, index) => item.name;
   _header (navigation) {
@@ -68,7 +82,7 @@ export default class ArticleDetailScreen extends React.Component {
       <TouchableOpacity
       onPress={() => navigation.goBack()}>
       <Icon.Ionicons
-        name={Platform.OS === 'ios' ? 'ios-arrow-dropleft-circle' : 'md-md-arrow-dropleft-circle'}
+        name={Platform.OS === 'ios' ? 'ios-arrow-dropleft-circle' : 'md-arrow-dropleft-circle'}
         size={26}
         color={'white'}
       />

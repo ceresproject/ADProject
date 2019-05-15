@@ -96,14 +96,13 @@ class BookmarkView(APIView):
 
     def post(self, request):
         params = self.request.data
-        tag_id = params['id']
+        _id = params['id']
         try:
-            location = LocationTag.objects.get(id=tag_id)
-            BookMark.objects.get_or_create(user=self.request.user, tag=location,
-                                           num_of_articles=ArticlePost.objects.filter(tag=location).count())
+            obj = ArticlePost.objects.get(id=_id)
+            BookMark.objects.get_or_create(user=self.request.user, article=obj)
 
         except:
-            return Response({'status': False,'detail': 'This location does not exist!'})
+            return Response({'status': False,'detail': 'This article does not exist!'})
         return Response({'status': True,'detail': 'Marked success!'})
 
 

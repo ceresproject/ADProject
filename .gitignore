@@ -116,3 +116,4 @@ appServer/.DS_Store
 appServer/.idea/workspace.xml
 appServer/.vscode/settings.json
 *.xml
+appClient/.idea/workspace.xml

@@ -41,14 +41,17 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         article = ArticlePost.objects.get(id=pk)
-        if ReadRecord.objects.filter(article=article, user=self.request.user).count()>1:
+        if ReadRecord.objects.filter(article=article, user=self.request.user).count()>0:
             ReadRecord.objects.filter(article=article, user=self.request.user).delete()
         ReadRecord.objects.get_or_create(article=article, user=self.request.user)
         read_times = ReadRecord.objects.filter(article=article).count()
         ArticlePostSerializer(article).update(instance=article, validated_data={'read_times': read_times})
         article = ArticlePost.objects.get(id=pk)
         serializer = ArticlePostSerializer(article)
-        return Response(serializer.data)
+
+        all_data = serializer.data
+        all_data['marked'] = BookMark.objects.filter(user=self.request.user, article=article).count() > 0
+        return Response(all_data)
 
 
 class LocationTagViewSet(viewsets.ModelViewSet):
@@ -99,11 +102,16 @@ class BookmarkView(APIView):
         _id = params['id']
         try:
             obj = ArticlePost.objects.get(id=_id)
-            BookMark.objects.get_or_create(user=self.request.user, article=obj)
+            if BookMark.objects.filter(user=self.request.user, article=obj).count() > 0:
+                BookMark.objects.get(user=self.request.user, article=obj).delete()
+                return Response({'status': True, 'detail': 'Removed Mark!'})
+
+            else:
+                BookMark.objects.create(user=self.request.user, article=obj)
+                return Response({'status': True,'detail': 'Marked success!'})
 
         except:
             return Response({'status': False,'detail': 'This article does not exist!'})
-        return Response({'status': True,'detail': 'Marked success!'})
 
 
 class RankAPIkView(APIView):

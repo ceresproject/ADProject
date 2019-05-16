@@ -1,18 +1,18 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ImageBackground,
-  ActivityIndicator,
-  View,
-  StatusBar,
-  FlatList,
-  AsyncStorage,
-  SafeAreaView
+    Image,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    ImageBackground,
+    ActivityIndicator,
+    View,
+    StatusBar,
+    FlatList,
+    AsyncStorage,
+    SafeAreaView, Alert
 } from 'react-native';
 import { Icon } from 'expo';
 
@@ -34,6 +34,7 @@ export default class ArticleDetailScreen extends React.Component {
       type: [],
       images: [],
       content: '',
+        marked: false,
       create_date: ''
     },
     read_times: 0
@@ -60,17 +61,26 @@ export default class ArticleDetailScreen extends React.Component {
       this.props.navigation.goBack()
     })
   }
-  async _mark() {
+  async _mark(id) {
       const token = await AsyncStorage.getItem('token')
       let that = this;
-      axios({url: api.apis.ARTICLE + JSON.stringify(this.itemId) + '/', method:'get', headers: {'Authorization': 'Token ' + token}}).then(res=>{
-          that.setState({header_images: res.data.images})
-          that.setState({article: res.data})
-          that.setState({loadding: false})
+      axios({url: api.apis.MAKEMARK, method:'post',data:{'id': id}, headers: {'Authorization': 'Token ' + token}}).then(res=>{
+          const newArticle = that.state.article
+          newArticle.marked = !newArticle.marked
+          that.setState({article: newArticle})
+
       }).catch(error=>{
           console.error(error)
-          this.setState({loadding: false})
-          this.props.navigation.goBack()
+          if (error) {
+              Alert.alert(
+                  'Error',
+                  'Mark failed',
+                  [
+                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  {cancelable: false},
+              );
+          }
       })
   }
   _keyExtractor = (item, index) => item.name;
@@ -107,11 +117,12 @@ export default class ArticleDetailScreen extends React.Component {
           colors={['transparent', BLACK]}>
             <View style={{margin:MARGIN*2, justifyContent:'flex-end'}}>
             <Text style={[styles.title,{marginTop:MARGIN*2}]}>{this.state.article.title}</Text>
-            <View style={[styles.tag,{backgroundColor:'orange',color:'black'}]}><Text style={styles.tagText}>Mark this <Icon.Ionicons
+            <TouchableOpacity onPress={()=>this._mark(this.state.article.id)} style={[styles.tag,{backgroundColor:this.state.article.marked? 'red':'orange',color:'black'}]}><Text style={styles.tagText}><Icon.Ionicons
                   name={Platform.OS === 'ios' ? 'ios-bookmark' : 'md-bookmark'}
                   size={14}
                   color={'white'}
-                /> {this.state.article.tag.tag}</Text></View>
+                />{!this.state.article.marked? ' Make Mark':' Cancel Mark'}</Text>
+            </TouchableOpacity>
             <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center', marginTop: MARGIN*2}}>
               <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center',marginRight:MARGIN}}>
                 <Icon.Ionicons

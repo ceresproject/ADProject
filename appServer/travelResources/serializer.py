@@ -35,6 +35,7 @@ class ArticlePostSerializer(serializers.ModelSerializer):
 class BookmarkSerializer(serializers.ModelSerializer):
     tag = LocationTagSerializer(read_only=True)
     user = UserSerializer(read_only=True)
+    article = ArticlePostSerializer(read_only=True)
     class Meta:
         model = BookMark
         fields = '__all__'

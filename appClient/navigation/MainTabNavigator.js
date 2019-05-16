@@ -35,19 +35,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const LocationStack = createStackNavigator({
-  Location: LocationScreen,
-});
 
-LocationStack.navigationOptions = {
-  tabBarLabel: 'Location',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-    />
-  ),
-};
 const SearchStack = createStackNavigator({
   Search: SearchScreen,
 });
@@ -103,7 +91,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LocationStack,
   SearchStack,
   LinksStack,
   SettingsStack,

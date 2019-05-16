@@ -21,7 +21,7 @@ from django.views.static import serve
 from account.views import *
 from travelResources.views import *
 from .routes import *
-from .settings import MEDIA_ROOT
+from appServer.settings import MEDIA_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),

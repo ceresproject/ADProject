@@ -65,25 +65,15 @@ class BookmarkPage(TestCase):
 class SearchPage(TestCase):
 
     def setUp(self):
+        print(articles.count())
         for i in articles:
-            ArticlePost.objects.create(i)
+            ArticlePost.objects.create(ArticlePostSerializer(i).data)
     key = 'hall'
     def test_get(self):
-        c = Client()
+        c = APIClient()
         print('Search function test start ')
 
         response = c.post('/api/search/', {'key': self.key})
         self.assertEquals(response.status_code, 200)
         print('Search test successful')
 
-class SearchPage_Titile(TestCase):
-    title = '1121541556151'
-    def setUp(self):
-        for i in articles:
-            ArticlePost.objects.create(i)
-    def test_title(self):
-        c = Client()
-        print('Search by title start ', ArticlePost.objects.count())
-        response = c.post('/api/search/', {'key': self.title})
-        self.assertEquals(response.status_code, 200)
-        print('Search test successful')

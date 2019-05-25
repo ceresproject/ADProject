@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^api/makeRank/', RankAPIkView.as_view()),
     url(r'^api/search/', SearchAPIView.as_view()),
     url(r'^api/history/', HistoryAPIView.as_view()),
+    url(r'^api/feedback/', FeedbackAPIkView.as_view()),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
 ]

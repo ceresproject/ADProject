@@ -78,7 +78,7 @@ export default class LinksScreen extends React.Component {
       return (
         <SafeAreaView style={[styles.container,{padding: MARGIN, paddingTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
           <View style={styles.navbar}>
-            <Text style={styles.title}>Concern</Text>
+            <Text style={styles.title}>Bookmark</Text>
           </View>
           <View style={[styles.container]}>
 

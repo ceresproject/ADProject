@@ -127,7 +127,7 @@ export class RegisterScreen extends React.Component {
       console.log(res.data)
   }).catch(error=>{
       console.log(error)
-
+      if (error){
       Alert.alert(
           'Error',
           'Login failed! Your username or password incorrect!',
@@ -136,6 +136,7 @@ export class RegisterScreen extends React.Component {
           ],
           {cancelable: false},
         );
+      }
   })
 }
 _goLogin() {

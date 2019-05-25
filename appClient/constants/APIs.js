@@ -14,6 +14,7 @@ export default {
     TAG: main_url + 'locationTag/',
     HOME_RECOMMEND: main_url + 'api/home/recommend/',
     LOGOUT: main_url + 'logout/',
+    FEEDBACK: main_url + 'api/feedback/',
     AUTH: main_url + 'auth/'
   }
 };

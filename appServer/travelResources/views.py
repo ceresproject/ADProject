@@ -130,6 +130,18 @@ class RankAPIkView(APIView):
         Rank.objects.get_or_create(user=self.request.user, post=article, level=params['level'], content=params['content'])
         return Response({'detail': 'Ranked success!'})
 
+class FeedbackAPIkView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request):
+        from django.core.mail import send_mail
+        params = self.request.data
+        title = params['title']
+        email = params['email']
+        content = params['content']
+        q = send_mail(title, 'We have received your feedback', '1289859476@qq.com',
+                      [email], fail_silently=False)
+        return Response({'detail': 'Feedback send success!'})
 
 class SearchAPIView(ListAPIView):
     #permission_classes = (permissions.IsAuthenticated, )

@@ -26,6 +26,9 @@ export default class FeedbackScreenScreen extends React.Component {
     title: 'Feebback',
   };
   state = {
+    title:'',
+    email: '',
+    content: '',
     loadding: false,
     header_images: [],
       star: 0,
@@ -52,13 +55,19 @@ export default class FeedbackScreenScreen extends React.Component {
   }
 
 
-  async _mark(id) {
+  async _feedback() {
       const token = await AsyncStorage.getItem('token')
       let that = this;
-      axios({url: api.apis.MAKEMARK, method:'post',data:{'id': id}, headers: {'Authorization': 'Token ' + token}}).then(res=>{
-          const newArticle = that.state.article
-          newArticle.marked = !newArticle.marked
-          that.setState({article: newArticle})
+      axios({url: api.apis.FEEDBACK, method:'post',data:{'title': this.state.title, 'email': this.state.email, 'content': this.state.content}, headers: {'Authorization': 'Token ' + token}}).then(res=>{
+        console.error(res.data)
+        Alert.alert(
+          'Success',
+          'We will contact you soon!',
+          [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+      );
 
       }).catch(error=>{
           console.error(error)
@@ -85,7 +94,7 @@ export default class FeedbackScreenScreen extends React.Component {
           <TextInput
               style={styles.input}
               placeholder="Title about problem!"
-              onChangeText={(Title) => this.setState({Title})}
+              onChangeText={(title) => this.setState({title})}
             />
           </View>
           <View style={{flexDirection: 'column', width:'100%', justifyContent:'center', alignItems:'flex-start'}}>
@@ -93,7 +102,7 @@ export default class FeedbackScreenScreen extends React.Component {
           <TextInput
               style={styles.input}
               placeholder="You Email!"
-              onChangeText={(Email) => this.setState({Email})}
+              onChangeText={(email) => this.setState({email})}
             />
           </View>
           <View style={{flexDirection: 'column', width:'100%', marginTop:MARGIN, justifyContent:'center', alignItems:'flex-start'}}>
@@ -102,11 +111,11 @@ export default class FeedbackScreenScreen extends React.Component {
               style={styles.inputText}
               placeholder="Content!"
               multiline={true}
-              onChangeText={(Content) => this.setState({Content})}
+              onChangeText={(content) => this.setState({content})}
             />
           </View>
           <TouchableOpacity
-          onPress={()=>this.submit()}
+          onPress={()=>this._feedback()}
           style={{flexDirection: 'column', width:'100%', marginTop:MARGIN, justifyContent:'center', alignItems:'center',
         backgroundColor:'orange',borderRadius:8,padding:10}}>
             <Text style={styles.label}>Submit</Text>

@@ -51,6 +51,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         all_data = serializer.data
         all_data['marked'] = BookMark.objects.filter(user=self.request.user, article=article).count() > 0
+        if Rank.objects.filter(user=self.request.user).count() > 0:
+
+            all_data['rank'] = Rank.objects.filter(user=self.request.user).first().level
         return Response(all_data)
 
 
@@ -145,7 +148,7 @@ class SearchAPIView(ListAPIView):
         return self.get_paginated_response(articles.data)
 
 
-class HistroyAPIView(ListAPIView):
+class HistoryAPIView(ListAPIView):
     #permission_classes = (permissions.IsAuthenticated, )
     queryset = ReadRecord.objects.all()
 
@@ -157,5 +160,6 @@ class HistroyAPIView(ListAPIView):
             records = ReadRecordSerializer(records,many=True)
         except:
             return Response({'detail': 'No results'})
+
         return self.get_paginated_response(records.data)
 #lass DefaultSearchPageResults(ListAPIView):

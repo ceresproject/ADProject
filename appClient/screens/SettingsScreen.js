@@ -20,6 +20,9 @@ import axios from "axios";
 import { ExpoConfigView } from '@expo/samples';
 
 export default class SettingsScreen extends React.Component {
+  state = {
+    user: ''
+  }
   static navigationOptions = {
     header: null
   };
@@ -38,6 +41,18 @@ export default class SettingsScreen extends React.Component {
 
     })
   }
+
+  async _load() {
+    const user = await AsyncStorage.getItem('username');
+    console.log("user",user)
+    this.setState({
+      user: user
+    })
+  }
+
+  componentDidMount(){
+    this._load()
+  }
   render() {
     
     /* Go ahead and delete ExpoConfigView and replace it with your
@@ -50,8 +65,52 @@ export default class SettingsScreen extends React.Component {
         <Text style={styles.title}>Profile</Text>
 
       </View>
-      <Button onPress={()=> this._logout()} title="Logout"></Button>
+      <View>
+        <Text style={[styles.title,{fontSize: 40, marginHorizontal:13, marginVertical:40}]}>
+          {this.state.user}
+        </Text>
+      </View>
+      <View style={{justifyContent:'space-between', flexDirection:'row', minHeight:130}}>
+        <TouchableOpacity onPress={()=>this.props.navigation.navigate('History')} style={{flex:1,justifyContent:'center', marginLeft:13,backgroundColor:'orange' ,alignItems:'center',flexDirection:'column', borderRadius:8, padding: 13}}>
+          <Icon.Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-timer' : 'md-timer'}
+                  size={38}
+                  color={'white'}
+                />
 
+            <Text style={{color:'white'}}>History</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Feedback')} style={{flex:1,marginLeft:13,marginRight:13,justifyContent:'center',backgroundColor:'#e20f28' ,alignItems:'center',flexDirection:'column', borderRadius:8, padding: 13}}>
+          <Icon.Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-mail' : 'md-mail'}
+                  size={38}
+                  color={'white'}
+                />
+
+            <Text style={{color:'white'}}>Feedback</Text>
+        </TouchableOpacity>
+      
+      </View>
+      <View style={{justifyContent:'space-between', flexDirection:'row', marginTop:13, minHeight:130}}>
+      <TouchableOpacity onPress={()=>this.props.navigation.navigate('AboutUs')} style={{flex:1,justifyContent:'center',marginLeft:13,backgroundColor:'#62656b' ,alignItems:'center',flexDirection:'column', borderRadius:8, padding: 13}}>
+          <Icon.Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-information-circle' : 'md-information-circle'}
+                  size={38}
+                  color={'white'}
+                />
+
+            <Text style={{color:'white'}}>About Us</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=> this._logout()} style={{flex:1,justifyContent:'center',marginLeft:13,marginRight:13,backgroundColor:'#444343' ,alignItems:'center',flexDirection:'column', borderRadius:8, padding: 13}}>
+          <Icon.Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'}
+                  size={38}
+                  color={'white'}
+                />
+
+            <Text style={{color:'white'}}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>);
   }
 }

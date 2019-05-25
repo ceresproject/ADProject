@@ -20,7 +20,7 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user_id': user.pk,
+            'user': user.username,
         })
 
 
@@ -41,13 +41,14 @@ class RegisterUserAPIView(APIView):
 
 class TokenAuthCheckAPIView(APIView):
     permission_classes = [
-        permissions.AllowAny # Or anon users can't register
+        permissions.IsAuthenticated # Or anon users can't register
     ]
 
     def post(self, request, *args, **kwargs):
         try:
+
             Token.objects.get(key=request.data['token'])
-            return Response({'detail': True})
+            return Response({'detail': True, 'user': self.request.user.username})
         except:
             return Response({'detail': False})
 

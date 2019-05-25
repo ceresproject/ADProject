@@ -42,6 +42,8 @@ export class SigninScreen extends React.Component {
         password: that.state.password
     }}).then(res=>{
         AsyncStorage.setItem('token', res.data.token);
+        AsyncStorage.setItem('username', res.data.user);
+
         that.props.navigation.navigate('Main');
         console.log(res.data)
     }).catch(error=>{

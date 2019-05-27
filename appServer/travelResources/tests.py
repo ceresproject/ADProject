@@ -22,7 +22,6 @@ class BookmarkPage(TestCase):
     location = 'Bishan'
     username = 'admin'
     password = 'admin'
-
     def a_test_register(self):
         c = Client()
         print('register test start')

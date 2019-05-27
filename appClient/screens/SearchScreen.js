@@ -59,14 +59,14 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={[styles.container,{marginTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
-        <View style={{padding: 9, flexDirection:'row', flex:1, height:40,}}>
+        <View style={{padding: 9, flexDirection:'row', width:'100%'}}>
           <TextInput
             style={[styles.searchBar,{flex:1}]}
             placeholder="Search tag and location"
             onChangeText={(text) => this.setState({text})}
             onSubmitEditing={()=> this._search()}
           />
-          <TouchableOpacity style={{width:40,height:40,marginHorizontal:9,justifyContent:'center',alignItems:'center'}} onPress={()=>this._search()}>
+          <TouchableOpacity style={{width:40,marginHorizontal:9,justifyContent:'center',alignItems:'center'}} onPress={()=>this._search()}>
           <Icon.Ionicons
                   name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
                   size={36}

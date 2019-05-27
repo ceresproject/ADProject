@@ -42,6 +42,8 @@ export class SigninScreen extends React.Component {
         password: that.state.password
     }}).then(res=>{
         AsyncStorage.setItem('token', res.data.token);
+        AsyncStorage.setItem('username', res.data.user);
+
         that.props.navigation.navigate('Main');
         console.log(res.data)
     }).catch(error=>{
@@ -125,7 +127,7 @@ export class RegisterScreen extends React.Component {
       console.log(res.data)
   }).catch(error=>{
       console.log(error)
-
+      if (error){
       Alert.alert(
           'Error',
           'Login failed! Your username or password incorrect!',
@@ -134,6 +136,7 @@ export class RegisterScreen extends React.Component {
           ],
           {cancelable: false},
         );
+      }
   })
 }
 _goLogin() {

@@ -41,17 +41,19 @@ export default class AppLoading extends React.Component {
     const that = this;
     const token = await AsyncStorage.getItem('token');
     console.log(token)
-    axios({url: api.apis.AUTH, method:'post' ,data: {
+    axios({url: api.apis.AUTH, method:'post' ,headers: {'Authorization': 'Token ' + token}, data: {
         token: token
     }}).then(res=>{
       if (res.data.detail){
+        AsyncStorage.setItem('username', res.data.user);
+        console.log(res.data.user)
         that.props.navigation.navigate('Main');
       } else {
         that.props.navigation.navigate('Auth');
       }
     }).catch(error=>{
         console.log(error)
-
+        that.props.navigation.navigate('Auth');
     })
   }
   render() {    

@@ -9,6 +9,9 @@ import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ArticleDetailScreen from "../screens/ArticleDetailScreen";
+import FeedbackScreen from "../screens/FeedbackScreen";
+import AboutUsScreen from "../screens/AboutUsScreen";
+import HistoryScreen from "../screens/HistoryScreen";
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   ArticleDetail: ArticleDetailScreen
@@ -38,6 +41,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
 
 const SearchStack = createStackNavigator({
   Search: SearchScreen,
+  ArticleDetail: ArticleDetailScreen
 });
 
 SearchStack.navigationOptions = ({ navigation }) => {
@@ -63,30 +67,57 @@ SearchStack.navigationOptions = ({ navigation }) => {
 
 const LinksStack = createStackNavigator({
   Links: LinksScreen,
+  ArticleDetail: ArticleDetailScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Concern',
-  tabBarIcon: ({ focused }) => (
+LinksStack.navigationOptions = ({ navigation }) => {
+  let tabBarLabel = 'Bookmark';
+  let tabBarIcon = ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-bookmark' : 'md-bookmark'}
+
     />
-  ),
+  )
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel,
+    tabBarIcon,
+  };
 };
 
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
+  ArticleDetail: ArticleDetailScreen,
+  Feedback: FeedbackScreen,
+  AboutUs: AboutUsScreen,
+  History: HistoryScreen
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Profile',
-  tabBarIcon: ({ focused }) => (
+SettingsStack.navigationOptions = ({ navigation }) => {
+  let tabBarLabel = 'Profile';
+  let tabBarIcon = ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-contact' : 'md-contact'}
+
     />
-  ),
+  )
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel,
+    tabBarIcon,
+  };
 };
 
 export default createBottomTabNavigator({

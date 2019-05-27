@@ -20,14 +20,14 @@ import { ExpoLinksView } from '@expo/samples';
 import { FlatList } from 'react-native-gesture-handler';
 import api from '../constants/APIs';
 import axios from "axios";
-export default class LinksScreen extends React.Component {
+export default class HistoryScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'History',
   };
   state = {
-    bookMarkData: [{
+    data: [{
         id: '',
-        create_date: '',
+        read_date: '',
         article:{
             id: '',
             images:[{
@@ -40,22 +40,22 @@ export default class LinksScreen extends React.Component {
   }
   _onRefresh = () => {
     this.setState({refreshing: true});
-    this._getBookMarkData()
+    this._getData()
   }
   componentDidMount() {
     this.setState({loading: true})
-    this._getBookMarkData()
+    this._getData()
   }
   _keyExtractor = (item, index) => item.id.toString();
 
-  async _getBookMarkData() {
+  async _getData() {
     const that = this;
     const token = await AsyncStorage.getItem('token');
-    axios({url: api.apis.BOOKMARK, method:'get', headers: {
+    axios({url: api.apis.HISTORY, method:'get', headers: {
       'Authorization': 'Token ' + token
     }}).then(res=>{
         console.log(res.data.results)
-      that.setState({bookMarkData: res.data.results,refreshing: false, loading: false})
+      that.setState({data: res.data.results,refreshing: false, loading: false})
     }).catch(error=>{
       that.setState({refreshing: true, loading: false});
 
@@ -71,19 +71,16 @@ export default class LinksScreen extends React.Component {
     if (this.state.loading) {
       return (
         <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#1fa64c" />
         </View>
       )  
     } else {
       return (
         <SafeAreaView style={[styles.container,{padding: MARGIN, paddingTop: Platform.OS == 'ios'?0: StatusBar.currentHeight}]}>
-          <View style={styles.navbar}>
-            <Text style={styles.title}>Bookmark</Text>
-          </View>
           <View style={[styles.container]}>
 
               <FlatList
-                  data={this.state.bookMarkData}
+                  data={this.state.data}
                   refreshControl={
                       <RefreshControl
                           refreshing={this.state.refreshing}
@@ -93,7 +90,7 @@ export default class LinksScreen extends React.Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={({item})=>
                       <View style={styles.recommendPart}>
-                          <Text style={styles.label}>{new Date(item.create_date).toLocaleDateString()}</Text>
+                          <Text style={styles.label}>{new Date(item.read_date).toLocaleDateString()}</Text>
 
                           <TouchableOpacity style={[styles.touchrp, styles.shadow]} onPress={() => this._goToLocationTagDetail(item.article.id)}>
 

@@ -42,7 +42,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'create_date']
 
 class ReadRecordSerializer(serializers.ModelSerializer):
-    #article = ArticlePostSerializer(read_only=True, required=False)
+    article = ArticlePostSerializer(read_only=True, required=False)
     class Meta:
         model = ReadRecord
         fields = '__all__'

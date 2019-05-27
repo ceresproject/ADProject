@@ -51,6 +51,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         all_data = serializer.data
         all_data['marked'] = BookMark.objects.filter(user=self.request.user, article=article).count() > 0
+        if Rank.objects.filter(user=self.request.user).count() > 0:
+
+            all_data['rank'] = Rank.objects.filter(user=self.request.user).first().level
         return Response(all_data)
 
 
@@ -127,6 +130,18 @@ class RankAPIkView(APIView):
         Rank.objects.get_or_create(user=self.request.user, post=article, level=params['level'], content=params['content'])
         return Response({'detail': 'Ranked success!'})
 
+class FeedbackAPIkView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request):
+        from django.core.mail import send_mail
+        params = self.request.data
+        title = params['title']
+        email = params['email']
+        content = params['content']
+        q = send_mail(title, 'We have received your feedback', '1289859476@qq.com',
+                      [email], fail_silently=False)
+        return Response({'detail': 'Feedback send success!'})
 
 class SearchAPIView(ListAPIView):
     #permission_classes = (permissions.IsAuthenticated, )
@@ -145,7 +160,7 @@ class SearchAPIView(ListAPIView):
         return self.get_paginated_response(articles.data)
 
 
-class HistroyAPIView(ListAPIView):
+class HistoryAPIView(ListAPIView):
     #permission_classes = (permissions.IsAuthenticated, )
     queryset = ReadRecord.objects.all()
 
@@ -157,5 +172,6 @@ class HistroyAPIView(ListAPIView):
             records = ReadRecordSerializer(records,many=True)
         except:
             return Response({'detail': 'No results'})
+
         return self.get_paginated_response(records.data)
 #lass DefaultSearchPageResults(ListAPIView):

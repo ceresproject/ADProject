@@ -28,6 +28,7 @@ export default class ArticleDetailScreen extends React.Component {
   state = {
     loadding: false,
     header_images: [],
+      star: 0,
     article: {
       id: '',
       title: '',
@@ -35,6 +36,7 @@ export default class ArticleDetailScreen extends React.Component {
       images: [],
       content: '',
         marked: false,
+        rank: 0,
       create_date: ''
     },
     read_times: 0
@@ -54,6 +56,7 @@ export default class ArticleDetailScreen extends React.Component {
     axios({url: api.apis.ARTICLE + JSON.stringify(this.itemId) + '/', method:'get', headers: {'Authorization': 'Token ' + token}}).then(res=>{
       that.setState({header_images: res.data.images})
       that.setState({article: res.data})
+      that.setState({star: res.data.rank})
       that.setState({loadding: false})
     }).catch(error=>{
       console.error(error)
@@ -88,7 +91,7 @@ export default class ArticleDetailScreen extends React.Component {
     return (
       <View
       style={{width: '100%', padding: MARGIN*2, height: 'auto', position: 'relative', left: 0, right: 0,
-      justifyContent:'flex-start'}}>
+      justifyContent:'space-start', flexDirection:'row'}}>
       <TouchableOpacity
       onPress={() => navigation.goBack()}>
       <Icon.Ionicons
@@ -99,6 +102,37 @@ export default class ArticleDetailScreen extends React.Component {
       </TouchableOpacity>
       </View>
       )
+  }
+
+  async _rankRate(index){
+    
+    const token = await AsyncStorage.getItem('token')
+    let that = this;
+    axios({url: api.apis.MAKERANK, method:'post',data:{'id': this.state.article.id, 'level': index, 'content': ''}, headers: {'Authorization': 'Token ' + token}}).then(res=>{
+        this.setState({
+          star:index
+      })
+      Alert.alert(
+        'Success',
+        'Ranked',
+        [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+    );
+    }).catch(error=>{
+        console.error(error)
+        if (error) {
+            Alert.alert(
+                'Error',
+                'Mark failed',
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+            );
+        }
+    })
   }
   render() {
     if (!this.state.loadding){
@@ -157,7 +191,16 @@ export default class ArticleDetailScreen extends React.Component {
             <View style={{margin:MARGIN*2}}>
             <Text style={[styles.label,{color:'rgba(255,255,255,0.8)'}]}>{this.state.article.content}</Text>
             </View>
-          
+            <View style={{margin:MARGIN*2, backgroundColor:'white', padding:MARGIN, borderRadius:8 }}>
+            <Text style={[styles.label,{color:BLACK,fontSize: 21, padding:3}]}>Ranks</Text>
+                <View style={{justifyContent:'space-around', flexDirection:'row', marginVertical:MARGIN*2}}>
+                    <TouchableOpacity onPress={()=>this._rankRate(1)}><Icon.Ionicons style={{color:'orange'}} name={Platform.OS === 'ios' ? 'ios-star'+ (this.state.star>=1&&this.state.star<=5?'':'-outline') : 'md-star'+ (this.state.star>=1&&this.state.star<=5?'':'-outline') } size={21} color={'white'} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this._rankRate(2)}><Icon.Ionicons style={{color:'orange'}} name={Platform.OS === 'ios' ? 'ios-star'+ (this.state.star>=2&&this.state.star<=5?'':'-outline') : 'md-star'+ (this.state.star>=2&&this.state.star<=5?'':'-outline')} size={21} color={'white'} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this._rankRate(3)}><Icon.Ionicons style={{color:'orange'}} name={Platform.OS === 'ios' ? 'ios-star'+ (this.state.star>=3&&this.state.star<=5?'':'-outline') : 'md-star'+ (this.state.star>=3&&this.state.star<=5?'':'-outline')} size={21} color={'white'} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this._rankRate(4)}><Icon.Ionicons style={{color:'orange'}} name={Platform.OS === 'ios' ? 'ios-star'+ (this.state.star>=4&&this.state.star<=5?'':'-outline') : 'md-star'+ (this.state.star>=4&&this.state.star<=5?'':'-outline')} size={21} color={'white'} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this._rankRate(5)}><Icon.Ionicons style={{color:'orange'}} name={Platform.OS === 'ios' ? 'ios-star'+ (this.state.star>=5&&this.state.star<=5?'':'-outline') : 'md-star'+ (this.state.star>=5&&this.state.star<=5?'':'-outline')} size={21} color={'white'} /></TouchableOpacity>
+                </View>
+            </View>
           </ScrollView>
         </SafeAreaView>
       );

@@ -94,7 +94,7 @@ WeChat: Travol_SG{'\n'}
 
 Customer Service Email: Travol_SG@gmail.com{'\n'}
 Customer Service Contact Number : (65)83293749{'\n'}
-Wokring Time : Weekdays 8:00 – 18:00{'\n'}
+Working Time : Weekdays 8:00 – 18:00{'\n'}
               Saturday 10:00- 16:00</Text>
           </View>
         </ScrollView>

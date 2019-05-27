@@ -56,6 +56,17 @@ export default class FeedbackScreenScreen extends React.Component {
 
 
   async _feedback() {
+      if (this.state.title == '' || this.state.email == '' || this.state.content == '') {
+        Alert.alert(
+          'Warning',
+          'Please fill up the required fields!',
+          [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        )
+        return
+      }
       const token = await AsyncStorage.getItem('token')
       let that = this;
       axios({url: api.apis.FEEDBACK, method:'post',data:{'title': this.state.title, 'email': this.state.email, 'content': this.state.content}, headers: {'Authorization': 'Token ' + token}}).then(res=>{
@@ -87,7 +98,7 @@ export default class FeedbackScreenScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'light-content'}/> 
+      <StatusBar barStyle={'dark-content'}/> 
         <ScrollView style={{padding:MARGIN}}>
           <View style={{flexDirection: 'column', width:'100%', justifyContent:'center', alignItems:'flex-start'}}>
           <Text style={styles.label}>*Title</Text>

@@ -117,3 +117,4 @@ appServer/.idea/workspace.xml
 appServer/.vscode/settings.json
 *.xml
 appClient/.idea/workspace.xml
+appServer/appServer/settings.py
